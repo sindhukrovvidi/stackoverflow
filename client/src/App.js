@@ -10,9 +10,9 @@ import NewAnswer from "./components/NewAnswer/index.js";
 function App() {
   return (
     <>
-    <FakeStackOverflow />
     <Router>
       <div className="App">
+      <FakeStackOverflow />
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<SignUp />} />
