@@ -1,0 +1,11 @@
+.form {
+    background-color: #f4f4f4;
+    padding: 20px;
+    width: 60%; /* Adjust as per requirement */
+    margin: 20px auto; /* Centers the form on the page */
+}
+
+.form-title {
+    text-align: center;
+  }
+  

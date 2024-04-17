@@ -1,0 +1,27 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn_indicator_container {
+    display: flex;
+    justify-content: center;
+}
+
+.form_postBtn {
+    margin-right: 10px;
+}
+
+.registerButton {
+    margin-top: 10px;
+}

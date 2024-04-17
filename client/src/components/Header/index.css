@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20%;
+    width: 100%;
+    background: #dddddd;
+    padding: 5px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 800;
+}
