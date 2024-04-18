@@ -5,14 +5,11 @@ import {
   Route,
   useNavigate,
   Routes,
-//   BrowserRouter as Router,
 } from "react-router-dom";
-// import { useNavigate,  } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute/index.js";
 import Login from "./Login/index.js";
 import SignUp from "./SignUp/index.js";
 import NewAnswer from "./NewAnswer/index.js";
-// import Question from "./components/QuestionPage/question/index.js";
 import QuestionPage from "./QuestionPage/index.js";
 import NewQuestion from "./NewQuestion/index.js";
 import AnswerPage from "./AnswerPage";
@@ -42,6 +39,10 @@ export default function fakeStackOverflow() {
     navigate(`/answer/${qid}`);
   };
 
+  const handleNewAnswer = (qid) => {
+    navigate(`/addAnswer/${qid}`)
+  }
+
 
   return (
     <div id="main-content" style={{ height: "100vh" }}>
@@ -55,8 +56,8 @@ export default function fakeStackOverflow() {
         />
         <div id="right_main" className="right_main">
           <Routes>
-            <Route exact path="/addAnswer" element={<ProtectedRoute />}>
-              <Route exact path="/addAnswer" element={<NewAnswer />} />
+            <Route exact path="/addAnswer/:qid" element={<ProtectedRoute />}>
+              <Route exact path="/addAnswer/:qid" element={<NewAnswer handleAnswer={handleAnswer}/>} />
             </Route>
             <Route exact path="/addQuestion" element={<ProtectedRoute />}>
               <Route exact path="/addQuestion" element={<NewQuestion />} />
@@ -64,7 +65,7 @@ export default function fakeStackOverflow() {
             <Route exact path="/login" element={<Login navigateTo={"/"} />} />
             <Route exact path="/register" element={<SignUp />} />
             <Route exact path="/questions" element={<QuestionPage handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer}/>} />
-            <Route exact path="/answer/:qid" element={<AnswerPage handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer}/>} />
+            <Route exact path="/answer/:qid" element={<AnswerPage handleNewQuestion={handleNewQuestion} handleNewAnswer={handleNewAnswer}/>} />
 
           </Routes>
         </div>

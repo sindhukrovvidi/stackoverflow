@@ -10,7 +10,6 @@ import { getQuestionById } from "../../services/questionService";
 // Component for the Answers page
 const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
     const { qid } = useParams();
-    console.log("Answer Page ", qid)
     const [question, setQuestion] = useState({});
     useEffect(() => {
         const fetchData = async () => {
@@ -48,7 +47,7 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
             <button
                 className="bluebtn ansButton"
                 onClick={() => {
-                    handleNewAnswer();
+                    handleNewAnswer(qid);
                 }}
             >
                 Answer Question
