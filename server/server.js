@@ -11,7 +11,8 @@ const cors = require("cors");
 mongoose.connect(MONGO_URL);
 
 const app = express();
-const unauthorizedPaths = ['/users/login', 'users/register', '/question/getQuestion'];
+// const unauthorizedPaths = ['/users/login', 'users/register', '/question/getQuestion'];
+const authorizedPaths = ['/question/addQuestion', '/question/addAnswer']
 
 function verifyToken(req, res, next) {
     const token = req.headers['authorization'];
@@ -38,10 +39,10 @@ app.use(
 app.use(express.json());
 
 app.use((req, res, next) => {
-    if (unauthorizedPaths.includes(req.path)) {
-        return next();
+    if (authorizedPaths.includes(req.path)) {
+        verifyToken(req, res, next);
     }
-    verifyToken(req, res, next);
+    return next();
 });
 
 app.get("/", (_, res) => {

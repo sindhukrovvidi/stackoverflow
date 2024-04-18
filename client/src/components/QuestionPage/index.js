@@ -1,7 +1,7 @@
 import "./index.css";
 import QuestionHeader from "./header";
 import Question from "./question";
-import { useNavigate,  } from "react-router-dom";
+// import { useNavigate,  } from "react-router-dom";
 // import { getQuestionsByFilter } from "../../../services/questionService";
 import { useEffect, useState } from "react";
 import { getQuestionsByFilter } from "../../services/questionService";
@@ -13,14 +13,14 @@ const QuestionPage = ({
     // setQuestionOrder,
     clickTag,
     handleAnswer,
-    // handleNewQuestion,
+    handleNewQuestion,
 }) => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [qlist, setQlist] = useState([]);
     const [questionOrder, setQuestionOrder] = useState("newest")
-    const handleNewQuestion = () => {
-        navigate("/addQuestion")
-    }
+    // const handleNewQuestion = () => {
+    //     navigate("/addQuestion")
+    // }
 
     useEffect(() => {
         const fetchData = async () => {

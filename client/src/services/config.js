@@ -15,7 +15,7 @@ const handleErr = (err) => {
 
 const api = _axios.create({
   withCredentials: true,
-  baseURL: "YOUR_BASE_API_URL",
+  // baseURL: "YOUR_BASE_API_URL",
   headers: {
     Authorization: `${token}`, 
   },

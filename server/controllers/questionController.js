@@ -50,6 +50,26 @@ const addQuestion = async (req, res) => {
   }
 };
 
+const getQuestionById = async (req, res) => {
+  try {
+    const questionId = req.params.qid;
+    const updatedQuestion = await Question.findOneAndUpdate(
+      { _id: questionId },
+      { $inc: { views: 1 } },
+      { new: true }
+    ).populate("answers");
+
+    if (!updatedQuestion) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+    res.status(200).send(updatedQuestion);
+  } catch (err) {
+    console.log("Error while fetching a question", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 router.get("/getQuestion", getQuestionsByFilter);
 router.post("/addQuestion", addQuestion);
+router.get("/getQuestionById/:qid", getQuestionById);
 module.exports = router;
