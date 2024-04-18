@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContextProvider";
 
-const Header = ({ search, setQuesitonPage }) => {
+const Header = ({ search, setSearchResults }) => {
   const [val, setVal] = useState(search);
   const { isAuthenticated, signOut } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Header = ({ search, setQuesitonPage }) => {
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            setQuesitonPage(e.target.value, "Search Results");
+            setSearchResults(e.target.value, "Search Results");
           }
         }}
       />

@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = () => {
     localStorage.removeItem('stackOverflowJwtToken');
+
     setIsAuthenticated(false);
   };
 

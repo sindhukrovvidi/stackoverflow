@@ -1,34 +1,33 @@
 import "./index.css";
 import QuestionHeader from "./header";
 import Question from "./question";
-
-// import { getQuestionsByFilter } from "../../../services/questionService";
 import { useEffect, useState } from "react";
+import { getQuestionsByFilter } from "../../services/questionService";
 
 const QuestionPage = ({
     title_text = "All Questions",
-    order,
     search,
-    setQuestionOrder,
     clickTag,
     handleAnswer,
     handleNewQuestion,
 }) => {
     const [qlist, setQlist] = useState([]);
+    const [questionOrder, setQuestionOrder] = useState("newest")
+
     useEffect(() => {
         const fetchData = async () => {
-            let res = [];
-            // let res = await getQuestionsByFilter(order, search);
+            let res = await getQuestionsByFilter(questionOrder, search);
             setQlist(res || []);
         };
 
         fetchData().catch((e) => console.log(e));
-    }, [order, search]);
+    }, [questionOrder, search]);
     return (
         <>
             <QuestionHeader
                 title_text={title_text}
                 qcnt={qlist.length}
+                questionOrder={questionOrder}
                 setQuestionOrder={setQuestionOrder}
                 handleNewQuestion={handleNewQuestion}
             />
