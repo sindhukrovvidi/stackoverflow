@@ -26,7 +26,7 @@ const QuestionHeader = ({
                     {["Newest", "Active", "Unanswered"].map((m, idx) => (
                         <OrderButton
                             key={idx}
-                            message={m}
+                            message={m.toLocaleLowerCase()}
                             setQuestionOrder={setQuestionOrder}
                         />
                     ))}

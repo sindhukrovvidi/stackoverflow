@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+// import _axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -14,6 +15,8 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = () => {
     localStorage.removeItem('stackOverflowJwtToken');
+    // _axios.defaults.headers.common['Authorization'] = null;
+
     setIsAuthenticated(false);
   };
 
