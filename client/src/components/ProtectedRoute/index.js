@@ -1,22 +1,13 @@
 import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { AuthContext } from '../../AuthContextProvider';
+import { useContext } from "react";
+import Login from '../Login';
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
-  // Check authentication status, redirect to login if not authenticated
-  const isAuthenticated = false; // Implement your authentication logic here
+const ProtectedRoute = () => {
+  const { isAuthenticated } = useContext(AuthContext);
 
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Navigate to="/login" replace />
-        )
-      }
-    />
-  );
+  return isAuthenticated ? <Outlet /> : <Login navigateTo={'/answer'}/>;
 };
 
 export default ProtectedRoute;
