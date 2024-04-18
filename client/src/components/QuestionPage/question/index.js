@@ -2,17 +2,12 @@ import { getMetaData } from "../../../tool";
 import "./index.css";
 
 const Question = ({ q, clickTag, handleAnswer }) => {
-    q = {
-        ask_date_time: new Date(),
-        tags: [],
-        answers: [],
-        views: 10,
-    }
     return (
         <div
             className="question right_padding"
             onClick={() => {
                 handleAnswer(q._id);
+                // should navigate to answerpage and have qid as prop
             }}
         >
             <div className="postStats">

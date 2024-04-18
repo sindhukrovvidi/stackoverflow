@@ -39,7 +39,7 @@ const login = async (req, res) => {
 
     const payload = { id: user.id, name: user.name };
     const token = jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }); // Token expires in 1 hour
-    res.status(200).json({ token: "Bearer " + token });
+    res.status(200).json({ token: token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

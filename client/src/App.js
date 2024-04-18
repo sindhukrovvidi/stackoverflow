@@ -8,14 +8,18 @@ import SignUp from "./components/SignUp/index.js";
 import NewAnswer from "./components/NewAnswer/index.js";
 // import Question from "./components/QuestionPage/question/index.js";
 import QuestionPage from "./components/QuestionPage/index.js";
+import NewQuestion from "./components/NewQuestion/index.js";
 
 function App() {
   return (
     <Router>
       <FakeStackOverflow>
         <Routes>
-          <Route exact path="/answer" element={<ProtectedRoute />}>
-            <Route exact path="/answer" element={<NewAnswer />} />
+          <Route exact path="/addAnswer" element={<ProtectedRoute />}>
+            <Route exact path="/addAnswer" element={<NewAnswer />} />
+          </Route>
+          <Route exact path="/addQuestion" element={<ProtectedRoute />}>
+            <Route exact path="/addQuestion" element={<NewQuestion />} />
           </Route>
           <Route exact path="/login" element={<Login navigateTo={"/"} />} />
           <Route exact path="/register" element={<SignUp />} />
