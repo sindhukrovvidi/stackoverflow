@@ -7,5 +7,4 @@ const getTagsWithQuestionNumber = async () => {
 
     return res.data;
 };
-
 export { getTagsWithQuestionNumber };
