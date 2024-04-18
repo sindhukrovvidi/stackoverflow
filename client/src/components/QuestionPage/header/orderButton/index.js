@@ -5,7 +5,7 @@ const OrderButton = ({ message, setQuestionOrder, isActive }) => {
         <button
         className={`btn ${isActive ? 'active' : ''}`}
             onClick={() => {
-                setQuestionOrder(message);
+                setQuestionOrder(message.toLowerCase());
             }}
         >
             {message}
