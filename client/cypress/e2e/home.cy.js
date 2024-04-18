@@ -19,7 +19,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.contains("Login").click();
 
     cy.window().then((win) => {
-          win.localStorage.setItem("stackOverflowJwtToken", 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MjAwZDQzMWRmZTA0MzQxZGNkMjg5MSIsImlhdCI6MTcxMzQ3NTA3MywiZXhwIjoxNzEzNDc4NjczfQ._Q6K1lVYZTrmjp7FE0cQl6FTayztJoV9seQ90P1CMdY');
+          win.localStorage.setItem("stackOverflowJwtToken", 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MjFhNDI1NDc4ZjE3M2VlYWI2OWQ4NyIsImlhdCI6MTcxMzQ4MDc1NywiZXhwIjoxNzEzNDg0MzU3fQ.jSBMtXnZIl_adUbBQUmG6FOYLBo-lgufUFV0gaGJiDI');
         });
     // cy.wait('@loginRequest').then((interception) => {
     //   // Get the access token from the mocked response
@@ -340,7 +340,7 @@ describe("Cypress Tests repeated from React assignment", () => {
   // });
 
   it("5.3 | Answer is mandatory when creating a new answer", () => {
-    cy.visit("http://localhost:3000.questions");
+    cy.visit("http://localhost:3000/questions");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
     cy.get("#answerUsernameInput").type("joym");
@@ -348,172 +348,178 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.contains("Answer text cannot be empty");
   });
 
-  // it("6.1 | Adds a question, click active button, verifies the sequence", () => {
-  //   cy.visit("http://localhost:3000/questions");
+  it("6.1 | Adds a question, click active button, verifies the sequence", () => {
+    cy.visit("http://localhost:3000/questions");
 
-  //   // add a question
-  //   cy.contains("Ask a Question").click();
-  //   cy.get("#formTitleInput").type("Test Question A");
-  //   cy.get("#formTextInput").type("Test Question A Text");
-  //   cy.get("#formTagInput").type("javascript");
-  //   cy.get("#formUsernameInput").type("mks0");
-  //   cy.contains("Post Question").click();
+    // add a question
+    cy.contains("Ask a Question").click();
+    cy.get("#formTitleInput").type("Test Question A");
+    cy.get("#formTextInput").type("Test Question A Text");
+    cy.get("#formTagInput").type("javascript");
+    cy.get("#formUsernameInput").type("mks0");
+    cy.contains("Post Question").click();
 
-  //   // add an answer to question of React Router
-  //   cy.contains("Programmatically navigate using React router").click();
-  //   cy.contains("Answer Question").click();
-  //   cy.get("#answerUsernameInput").type("mks1");
-  //   cy.get("#answerTextInput").type("Answer to React Router");
-  //   cy.contains("Post Answer").click();
+    // add an answer to question of React Router
+    cy.contains("Programmatically navigate using React router").click();
+    cy.contains("Answer Question").click();
+    cy.get("#answerUsernameInput").type("mks1");
+    cy.get("#answerTextInput").type("Answer to React Router");
+    cy.contains("Post Answer").click();
 
-  //   // go back to main page
-  //   cy.contains("Questions").click();
+    // go back to main page
+    cy.contains("Questions").click();
 
-  //   // add an answer to question of Android Studio
-  //   cy.contains(
-  //     "android studio save string shared preference, start activity and load the saved string"
-  //   ).click();
-  //   cy.contains("Answer Question").click();
-  //   cy.get("#answerUsernameInput").type("mks1");
-  //   cy.get("#answerTextInput").type("Answer to android studio");
-  //   cy.contains("Post Answer").click();
+    // add an answer to question of Android Studio
+    cy.contains(
+      "android studio save string shared preference, start activity and load the saved string"
+    ).click();
+    cy.contains("Answer Question").click();
+    cy.get("#answerUsernameInput").type("mks1");
+    cy.get("#answerTextInput").type("Answer to android studio");
+    cy.contains("Post Answer").click();
 
-  //   // go back to main page
-  //   cy.contains("Questions").click();
+    cy.visit("http://localhost:3000/questions");
+    // go back to main page
+    cy.contains("Questions").click();
 
-  //   // add an answer to question A
-  //   cy.contains("Test Question A").click();
-  //   cy.contains("Answer Question").click();
-  //   cy.get("#answerUsernameInput").type("mks2");
-  //   cy.get("#answerTextInput").type("Answer Question A");
-  //   cy.contains("Post Answer").click();
+    // add an answer to question A
+    cy.contains("Test Question A").click();
+    cy.contains("Answer Question").click();
+    cy.get("#answerUsernameInput").type("mks2");
+    cy.get("#answerTextInput").type("Answer Question A");
+    cy.contains("Post Answer").click();
 
-  //   // go back to main page
-  //   cy.contains("Questions").click();
+    cy.visit("http://localhost:3000/questions");
+    // go back to main page
+    cy.contains("Questions").click();
 
-  //   // clicks active
-  //   cy.contains("Active").click();
+    // clicks active
+    cy.contains("Active").click();
 
-  //   const qTitles = [
-  //     "Test Question A",
-  //     "android studio save string shared preference, start activity and load the saved string",
-  //     "Programmatically navigate using React router",
-  //     "Quick question about storage on android",
-  //     "Object storage for a web application",
-  //   ];
-  //   cy.get(".postTitle").each(($el, index, $list) => {
-  //     cy.wrap($el).should("contain", qTitles[index]);
-  //   });
-  // });
+    const qTitles = [
+      "Test Question A",
+      "android studio save string shared preference, start activity and load the saved string",
+      "Programmatically navigate using React router",
+      "Quick question about storage on android",
+      "Object storage for a web application",
+    ];
+    cy.get(".postTitle").each(($el, index, $list) => {
+      cy.wrap($el).should("contain", qTitles[index]);
+    });
+  });
 
-  // it("6.2 | Checks if a6 and a7 exist in q3 answers page", () => {
-  //   const answers = [
-  //     "Using GridFS to chunk and store content.",
-  //     "Storing content as BLOBs in databases.",
-  //   ];
-  //   cy.visit("http://localhost:3000");
-  //   cy.contains("Object storage for a web application").click();
-  //   cy.get(".answerText").each(($el, index) => {
-  //     cy.contains(answers[index]);
-  //   });
-  // });
+  it("6.2 | Checks if a6 and a7 exist in q3 answers page", () => {
+    const answers = [
+      "Using GridFS to chunk and store content.",
+      "Storing content as BLOBs in databases.",
+    ];
+    cy.visit("http://localhost:3000/questions");
+    cy.contains("Object storage for a web application").click();
+    cy.get(".answerText").each(($el, index) => {
+      cy.contains(answers[index]);
+    });
+  });
 
-  // it("6.3 | Checks if a8 exist in q4 answers page", () => {
-  //   cy.visit("http://localhost:3000");
-  //   cy.contains("Quick question about storage on android").click();
-  //   cy.contains("Store data in a SQLLite database.");
-  // });
+  it("6.3 | Checks if a8 exist in q4 answers page", () => {
+    cy.visit("http://localhost:3000/questions");
+    cy.contains("Quick question about storage on android").click();
+    cy.contains("Store data in a SQLLite database.");
+  });
 
-  // it("7.1 | Adds a question with tags, checks the tags existied", () => {
-  //   cy.visit("http://localhost:3000");
+  it("7.1 | Adds a question with tags, checks the tags existied", () => {
+    cy.visit("http://localhost:3000/questions");
 
-  //   // add a question with tags
-  //   cy.contains("Ask a Question").click();
-  //   cy.get("#formTitleInput").type("Test Question A");
-  //   cy.get("#formTextInput").type("Test Question A Text");
-  //   cy.get("#formTagInput").type("test1 test2 test3");
-  //   cy.get("#formUsernameInput").type("mks1");
-  //   cy.contains("Post Question").click();
+    // add a question with tags
+    cy.contains("Ask a Question").click();
+    cy.get("#formTitleInput").type("Test Question A");
+    cy.get("#formTextInput").type("Test Question A Text");
+    cy.get("#formTagInput").type("test1 test2 test3");
+    cy.get("#formUsernameInput").type("mks1");
+    cy.contains("Post Question").click();
 
-  //   // clicks tags
-  //   cy.contains("Tags").click();
-  //   cy.contains("test1");
-  //   cy.contains("test2");
-  //   cy.contains("test3");
-  // });
+    // clicks tags
+    cy.contains("Tags").click();
+    cy.visit("http://localhost:3000/tags");
+    cy.contains("test1");
+    cy.contains("test2");
+    cy.contains("test3");
+  });
 
-  // it("7.2 | Checks if all tags exist", () => {
-  //   cy.visit("http://localhost:3000");
-  //   // all tags exist in the page
-  //   cy.contains("Tags").click();
-  //   cy.contains("react", { matchCase: false });
-  //   cy.contains("javascript", { matchCase: false });
-  //   cy.contains("android-studio", { matchCase: false });
-  //   cy.contains("shared-preferences", { matchCase: false });
-  //   cy.contains("storage", { matchCase: false });
-  //   cy.contains("website", { matchCase: false });
-  //   cy.contains("Flutter", { matchCase: false });
-  // });
+  it("7.2 | Checks if all tags exist", () => {
+    cy.visit("http://localhost:3000/questions");
+    // all tags exist in the page
+    cy.contains("Tags").click();
+    cy.visit("http://localhost:3000/tags");
+    cy.contains("react", { matchCase: false });
+    cy.contains("javascript", { matchCase: false });
+    cy.contains("android-studio", { matchCase: false });
+    cy.contains("shared-preferences", { matchCase: false });
+    cy.contains("storage", { matchCase: false });
+    cy.contains("website", { matchCase: false });
+    cy.contains("Flutter", { matchCase: false });
+  });
 
-  // it("7.3 | Checks if all questions exist inside tags", () => {
-  //   cy.visit("http://localhost:3000");
-  //   // all question no. should be in the page
-  //   cy.contains("Tags").click();
-  //   cy.contains("7 Tags");
-  //   cy.contains("1 question");
-  //   cy.contains("2 question");
-  //   cy.contains("0 question");
-  // });
+  it("7.3 | Checks if all questions exist inside tags", () => {
+    cy.visit("http://localhost:3000/questions");
+    // all question no. should be in the page
+    cy.contains("Tags").click();
+    cy.visit("http://localhost:3000/tags");
+    cy.contains("7 Tags");
+    cy.contains("1 question");
+    cy.contains("2 question");
+    cy.contains("0 question");
+  });
 
-  // it("8.1 | go to question in tag react", () => {
-  //   cy.visit("http://localhost:3000");
-  //   // all question no. should be in the page
-  //   cy.contains("Tags").click();
-  //   cy.contains("react").click();
-  //   cy.contains("Programmatically navigate using React router");
-  // });
+  it("8.1 | go to question in tag react", () => {
+    cy.visit("http://localhost:3000/questions");
+    // all question no. should be in the page
+    cy.contains("Tags").click();
+    cy.contains("react").click();
+    cy.contains("Programmatically navigate using React router");
+  });
 
-  // it("8.2 | go to questions in tag storage", () => {
-  //   cy.visit("http://localhost:3000");
-  //   // all question no. should be in the page
-  //   cy.contains("Tags").click();
-  //   cy.contains("storage").click();
-  //   cy.contains("Quick question about storage on android");
-  //   cy.contains("Object storage for a web application");
-  // });
+  it("8.2 | go to questions in tag storage", () => {
+    cy.visit("http://localhost:3000/questions");
+    // all question no. should be in the page
+    cy.contains("Tags").click();
+    cy.contains("storage").click();
+    cy.contains("Quick question about storage on android");
+    cy.contains("Object storage for a web application");
+  });
 
-  // it("8.3 | create a new question with a new tag and finds the question through tag", () => {
-  //   cy.visit("http://localhost:3000");
+  it("8.3 | create a new question with a new tag and finds the question through tag", () => {
+    cy.visit("http://localhost:3000/questions");
 
-  //   // add a question with tags
-  //   cy.contains("Ask a Question").click();
-  //   cy.get("#formTitleInput").type("Test Question A");
-  //   cy.get("#formTextInput").type("Test Question A Text");
-  //   cy.get("#formTagInput").type("test1-tag1");
-  //   cy.get("#formUsernameInput").type("mks1");
-  //   cy.contains("Post Question").click();
+    // add a question with tags
+    cy.contains("Ask a Question").click();
+    cy.get("#formTitleInput").type("Test Question A");
+    cy.get("#formTextInput").type("Test Question A Text");
+    cy.get("#formTagInput").type("test1-tag1");
+    cy.get("#formUsernameInput").type("mks1");
+    cy.contains("Post Question").click();
 
-  //   // clicks tags
-  //   cy.contains("Tags").click();
-  //   cy.contains("test1-tag1").click();
-  //   cy.contains("Test Question A");
-  // });
+    // clicks tags
+    cy.contains("Tags").click();
+    cy.visit("http://localhost:3000/tags");
+    cy.contains("test1-tag1").click();
+    cy.contains("Test Question A");
+  });
 
-  // it("9.1 | Adds a question with a hyperlink and verifies", () => {
-  //   cy.visit("http://localhost:3000");
-  //   cy.contains("Ask a Question").click();
-  //   cy.get("#formTitleInput").type("How to add a hyperlink in Markdown?");
-  //   cy.get("#formTextInput").type(
-  //     "Here is a link: [Google](https://www.google.com)"
-  //   );
-  //   cy.get("#formTagInput").type("markdown");
-  //   cy.get("#formUsernameInput").type("user1");
-  //   cy.contains("Post Question").click();
-  //   cy.contains("How to add a hyperlink in Markdown?").click();
-  //   cy.get("#questionBody")
-  //     .find("a")
-  //     .should("have.attr", "href", "https://www.google.com");
-  // });
+  it("9.1 | Adds aXquestion with a hyperlink and verifies", () => {
+    cy.visit("http://localhost:3000/questions");
+    cy.contains("Ask a Question").click();
+    cy.get("#formTitleInput").type("How to add a hyperlink in Markdown?");
+    cy.get("#formTextInput").type(
+      "Here is a link: [Google](https://www.google.com)"
+    );
+    cy.get("#formTagInput").type("markdown");
+    cy.get("#formUsernameInput").type("user1");
+    cy.contains("Post Question").click();
+    cy.contains("How to add a hyperlink in Markdown?").click();
+    cy.get("#questionBody")
+      .find("a")
+      .should("have.attr", "href", "https://www.google.com");
+  });
 
   // it("9.2 | Create new answer should be displayed at the top of the answers page", () => {
   //   const answers = [
@@ -521,9 +527,10 @@ describe("Cypress Tests repeated from React assignment", () => {
   //     "React Router is mostly a wrapper around the history library. history handles interaction with the browser's window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don't have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node.",
   //     "On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn't change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.",
   //   ];
-  //   cy.visit("http://localhost:3000");
+  //   cy.visit("http://localhost:3000/questions");
   //   cy.contains("Programmatically navigate using React router").click();
   //   cy.contains("Answer Question").click();
+  //   cy.visit("http://localhost:3000/addAnswer");
   //   cy.get("#answerUsernameInput").type("joym");
   //   cy.get("#answerTextInput").type(
   //     "Check this link for more info: [Documentation](https://docs.example.com)"
