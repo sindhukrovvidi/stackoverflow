@@ -22,6 +22,7 @@ export default function fakeStackOverflow() {
   const navigate = useNavigate();
 
   const handleQuestions = () => {
+    setSearch("")
     setSelectedTab("q");
     setQuestionPageTitle('All Questions')
     navigate("/questions");
@@ -54,10 +55,15 @@ export default function fakeStackOverflow() {
     navigate("/questions");
   }
 
+  const setSearchResults = (value, title) => {
+    setSearch(value)
+    setQuestionPageTitle(value !=="" ? title: 'All Questions')
+    navigate("/questions");
+  }
 
   return (
     <div id="main-content" style={{ height: "100vh" }}>
-      <Header></Header>
+      <Header setSearchResults={setSearchResults}></Header>
       <div id="main" className="main">
         <SideBarNav
           selected={selectedTab}
@@ -75,7 +81,7 @@ export default function fakeStackOverflow() {
             </Route>
             <Route exact path="/login" element={<Login navigateTo={"/"} />} />
             <Route exact path="/register" element={<SignUp />} />
-            <Route exact path="/questions" element={<QuestionPage title_text={title} handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer} search={search}/>} />
+            <Route exact path="/questions" element={<QuestionPage title_text={title} handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer} search={search} clickTag={clickTag}/>} />
             <Route exact path="/answer/:qid" element={<AnswerPage handleNewQuestion={handleNewQuestion} handleNewAnswer={handleNewAnswer}/>} />
             <Route exact path="/tags" element={<TagPage handleNewQuestion={handleNewQuestion} clickTag={clickTag}/>} />
 

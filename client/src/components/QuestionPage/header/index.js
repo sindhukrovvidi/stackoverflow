@@ -6,6 +6,7 @@ const QuestionHeader = ({
     qcnt,
     setQuestionOrder,
     handleNewQuestion,
+    questionOrder
 }) => {
     return (
         <div>
@@ -28,6 +29,7 @@ const QuestionHeader = ({
                             key={idx}
                             message={m.toLocaleLowerCase()}
                             setQuestionOrder={setQuestionOrder}
+                            isActive={questionOrder === m.toLowerCase()}
                         />
                     ))}
                 </div>
