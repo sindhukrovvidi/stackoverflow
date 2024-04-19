@@ -12,6 +12,10 @@ const Header = ({ search, setSearchResults }) => {
     navigate('/login');
   };
 
+  const goToProfile = () => {
+    navigate('/profile'); // assuming the profile page route is '/profile'
+  };
+
   return (
     <div id="header" className="header">
       <img
@@ -36,14 +40,22 @@ const Header = ({ search, setSearchResults }) => {
         }}
       />
       {isAuthenticated ? (
-        <button
-          className="form_postBtn"
-          onClick={() => {
-            signOut();
-          }}
-        >
-          Sign Out
-        </button>
+        <>
+          <button
+            className="form_postBtn"
+            onClick={goToProfile}
+          >
+            Profile
+          </button>
+          <button
+            className="form_postBtn"
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign Out
+          </button>
+        </>
       ) : (
         <button className="form_postBtn" onClick={Login}>
           Login

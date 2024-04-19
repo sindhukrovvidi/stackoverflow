@@ -6,7 +6,7 @@ import Input from "../baseComponents/input";
 import { loginUser } from "../../services/userService";
 import { AuthContext } from "../../AuthContextProvider";
 
-const Login = ({navigateTo}) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
@@ -16,7 +16,7 @@ const Login = ({navigateTo}) => {
     try {
       const response = await loginUser(email, password);
       signIn(response.token);
-      navigate(navigateTo);
+      navigate('/questions');
     } catch (error) {
       console.error(error);
     }

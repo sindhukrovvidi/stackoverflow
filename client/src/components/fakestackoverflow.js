@@ -14,6 +14,8 @@ import QuestionPage from "./QuestionPage/index.js";
 import NewQuestion from "./NewQuestion/index.js";
 import AnswerPage from "./AnswerPage";
 import TagPage from "./TagPage/index.js";
+import UserProfile from "./UserProfile/index.js";
+import EditUserProfile from "./UserProfile/editprofileindex.js";
 
 export default function fakeStackOverflow() {
   const [selectedTab, setSelectedTab] = useState("q");
@@ -79,8 +81,10 @@ export default function fakeStackOverflow() {
             <Route exact path="/addQuestion" element={<ProtectedRoute />}>
               <Route exact path="/addQuestion" element={<NewQuestion />} />
             </Route>
-            <Route exact path="/login" element={<Login navigateTo={"/"} />} />
+            <Route exact path="/login" element={<Login/>} />
             <Route exact path="/register" element={<SignUp />} />
+            <Route exact path="/profile" element={<UserProfile />} />
+            <Route exact path="/editprofile" element={<EditUserProfile />} />
             <Route exact path="/questions" element={<QuestionPage title_text={title} handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer} search={search} clickTag={clickTag}/>} />
             <Route exact path="/answer/:qid" element={<AnswerPage handleNewQuestion={handleNewQuestion} handleNewAnswer={handleNewAnswer}/>} />
             <Route exact path="/tags" element={<TagPage handleNewQuestion={handleNewQuestion} clickTag={clickTag}/>} />
