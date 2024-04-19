@@ -13,18 +13,24 @@ import NewAnswer from "./NewAnswer/index.js";
 import QuestionPage from "./QuestionPage/index.js";
 import NewQuestion from "./NewQuestion/index.js";
 import AnswerPage from "./AnswerPage";
+import TagPage from "./TagPage/index.js";
 
 export default function fakeStackOverflow() {
   const [selectedTab, setSelectedTab] = useState("q");
+  const [title, setQuestionPageTitle] = useState("All Questions")
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   const handleQuestions = () => {
+    setSearch("")
     setSelectedTab("q");
+    setQuestionPageTitle('All Questions')
     navigate("/questions");
   };
 
   const handleTags = () => {
     setSelectedTab("t");
+    navigate("/tags");
   };
 
   const handleFavourites = () => {
@@ -43,10 +49,21 @@ export default function fakeStackOverflow() {
     navigate(`/addAnswer/${qid}`)
   }
 
+  const clickTag = (tagName) => {
+    setQuestionPageTitle(tagName)
+    setSearch(`[${tagName}]`);
+    navigate("/questions");
+  }
+
+  const setSearchResults = (value, title) => {
+    setSearch(value)
+    setQuestionPageTitle(value !=="" ? title: 'All Questions')
+    navigate("/questions");
+  }
 
   return (
     <div id="main-content" style={{ height: "100vh" }}>
-      <Header></Header>
+      <Header setSearchResults={setSearchResults}></Header>
       <div id="main" className="main">
         <SideBarNav
           selected={selectedTab}
@@ -64,8 +81,9 @@ export default function fakeStackOverflow() {
             </Route>
             <Route exact path="/login" element={<Login navigateTo={"/"} />} />
             <Route exact path="/register" element={<SignUp />} />
-            <Route exact path="/questions" element={<QuestionPage handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer}/>} />
+            <Route exact path="/questions" element={<QuestionPage title_text={title} handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer} search={search} clickTag={clickTag}/>} />
             <Route exact path="/answer/:qid" element={<AnswerPage handleNewQuestion={handleNewQuestion} handleNewAnswer={handleNewAnswer}/>} />
+            <Route exact path="/tags" element={<TagPage handleNewQuestion={handleNewQuestion} clickTag={clickTag}/>} />
 
           </Routes>
         </div>
