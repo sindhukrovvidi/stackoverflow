@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserProfile = require("../models/userProfile");
-const keys = require('../config/keys.js');
+const keys = require("../config/keys.js");
 
 const register = async (req, res) => {
   try {
@@ -37,9 +37,15 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const payload = { id: user.id, name: user.name };
+    // decode the password
+    const payload = {
+      username: user.username,
+      email: user.email,
+      contact_no: user.contact_no,
+      password: user.password,
+    };
     const token = jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }); // Token expires in 1 hour
-    res.status(200).json({ token: token });
+    res.status(200).json({ token: token, ...payload });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

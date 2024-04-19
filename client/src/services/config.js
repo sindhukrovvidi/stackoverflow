@@ -2,8 +2,6 @@ import _axios from "axios";
 
 const REACT_APP_API_URL = "http://localhost:8000";
 
-const token = localStorage.getItem("stackOverflowJwtToken");
-
 const handleRes = (res) => {
   return res;
 };
@@ -15,12 +13,20 @@ const handleErr = (err) => {
 
 const api = _axios.create({
   withCredentials: true,
-  // baseURL: "YOUR_BASE_API_URL",
-  headers: {
-    Authorization: `${token}`, 
-  },
+  baseURL: REACT_APP_API_URL,
 });
-api.interceptors.request.use(handleRes, handleErr);
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("stackOverflowJwtToken");
+    if (token) {
+      config.headers.Authorization = token;
+    }
+    return config;
+  },
+  handleErr
+);
+
 api.interceptors.response.use(handleRes, handleErr);
 
 export { REACT_APP_API_URL, api };
