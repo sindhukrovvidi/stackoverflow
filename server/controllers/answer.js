@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require('mongoose');
 const Answer = require("../models/answers");
 const Question = require("../models/questions");
 
@@ -12,7 +11,7 @@ const addAnswer = async (req, res) => {
 
         const newAnswer = await Answer.create({
             text: ans.text,
-            ans_by: req.session.user ? req.session.user._id : 'unknownUser',
+            ans_by: ans.ans_by,
             ans_date_time: ans.ans_date_time
         });
 
@@ -29,37 +28,5 @@ const addAnswer = async (req, res) => {
     }
 };
 
-const updateAnswer = async (req, res) => {
-    try {
-      const answerId = new mongoose.Types.ObjectId(req.params.aid); 
-  
-      const { text, modifiedOn } = req.body;
-     
-      const updateObject = {};
-      if (modifiedOn) updateObject.modifiedOn = modifiedOn;
-      if (text) updateObject.text = text;
-  
-      if (Object.keys(updateObject).length > 0) {
-        const updatedAnswer = await Answer.findOneAndUpdate(
-          { _id: answerId },
-          updateObject,
-          { new: true }
-        );
-  
-        if (!updatedAnswer) {
-          return res.status(404).json({ error: "Answer not found" });
-        }
-  
-        res.status(200).send(updatedAnswer);
-      } else {
-        res.status(200).json({ message: "No changes detected in request body" });
-      }
-    } catch (err) {
-      console.error("Error while updating answer: ", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  };
-
 router.post("/addAnswer", addAnswer);
-router.post("/updateAnswer/:aid", updateAnswer);
 module.exports = router;

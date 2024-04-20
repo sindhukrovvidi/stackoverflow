@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
@@ -6,11 +6,9 @@ import "./index.css";
 import { validateHyperlink } from "../../tool";
 import { useNavigate } from "react-router-dom";
 import { addQuestion } from "../../services/questionService";
-import { AuthContext } from "../../AuthContextProvider";
 
 const NewQuestion = () => {
   const navigate = useNavigate();
-  const { csrfToken } = useContext(AuthContext);
 
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
@@ -72,7 +70,7 @@ const NewQuestion = () => {
       ask_date_time: new Date(),
     };
 
-    const res = await addQuestion(question, csrfToken);
+    const res = await addQuestion(question);
     if (res && res._id) {
       handleQuestions();
     }
