@@ -7,12 +7,15 @@ import "./index.css";
 import QuestionBody from "./questionBody";
 import { getQuestionById } from "../../services/questionService";
 import { AuthContext } from "../../AuthContextProvider";
+import { useNavigate } from "react-router-dom";
+import { getTagsWithIds } from "../../services/tagService";
 
 // Component for the Answers page
 const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
     const { qid } = useParams();
     const [question, setQuestion] = useState({});
     const {csrfToken} = useContext(AuthContext)
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () => {
             let res = await getQuestionById(qid, csrfToken);
@@ -21,6 +24,15 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
         fetchData().catch((e) => console.log(e));
     }, [qid]);
 
+    const updateQuestion = async() => {
+        const {title, text, tags} = question;
+        const tag = await getTagsWithIds(tags, csrfToken);
+        const tagNames = tag.map(currTag => currTag.name);
+        navigate(`/question/${qid}`, {
+             state: { currTitle: title, currText: text, currTags: tagNames.join(" ") } 
+          });
+        
+    }
     return (
         <>
             <AnswerHeader
@@ -31,10 +43,12 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
                 handleNewQuestion={handleNewQuestion}
             />
             <QuestionBody
+                title={question && question.title}
                 views={question && question.views}
                 text={question && question.text}
                 askby={question && question.asked_by}
                 meta={question && getMetaData(new Date(question.ask_date_time))}
+                updateQuestion={updateQuestion}
             />
             {question &&
                 question.answers &&

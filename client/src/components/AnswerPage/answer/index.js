@@ -1,8 +1,11 @@
 import { handleHyperlink } from "../../../tool";
 import "./index.css";
+import { AuthContext } from "../../../AuthContextProvider";
+import { useContext } from "react";
 
 // Component for the Answer Page
 const Answer = ({ text, ansBy, meta }) => {
+    const {user} = useContext(AuthContext)
     return (
         <div className="answer right_padding">
             <div id="answerText" className="answerText">
@@ -11,6 +14,7 @@ const Answer = ({ text, ansBy, meta }) => {
             <div className="answerAuthor">
                 <div className="answer_author">{ansBy}</div>
                 <div className="answer_question_meta">{meta}</div>
+                {user === ansBy ? <button> Edit Answer </button> : <></>}
             </div>
         </div>
     );
