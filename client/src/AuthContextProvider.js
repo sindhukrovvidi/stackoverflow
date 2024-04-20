@@ -11,11 +11,12 @@ export const AuthProvider = ({ children }) => {
     setLoggedIn(true);
   };
 
-  const signOutAuth = () => {
-    setLoggedIn(false);
+  const signOutAuth = (resLoggedIn) => {
+    setLoggedIn(resLoggedIn);
   };
 
   const updateCsrfToken = (token) => {
+    console.log("Setting context ", token)
     setCsrfToken(token)
   }
 

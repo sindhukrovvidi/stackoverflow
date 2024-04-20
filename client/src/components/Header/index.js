@@ -17,14 +17,14 @@ const Header = ({ search, setSearchResults }) => {
 
   const signOut = async() => {
     await logoutUser(csrfToken);
-    signOutAuth();
+    signOutAuth(false);
     updateUser("")
     navigate('/questions');
   }
 
   const goToProfile = async() => {
     await getCurrentUserDetails(csrfToken);
-    navigate('/profile'); // assuming the profile page route is '/profile'
+    navigate('/profile'); 
   };
 
 

@@ -29,9 +29,7 @@ const login = async (req, res) => {
     }
 
     if (user) {
-      console.log("Found the user ", user)
       req.session.user = user;
-      console.log("Setting the user in session ", req.session.user)
       res.json({ success: true, user });
     } else {
       res.status(401).json({ success: false, message: "Invalid credentials" });

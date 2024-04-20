@@ -54,7 +54,6 @@ const Login = ({ navigateTo }) => {
     try {
       const response = await loginUser(email, password, token);
       if (response.data.success) toast.success("Successfully logged in!");
-      signOutAuth(response.data.success);
       updateUser(response.data.user.username);
       signIn();
       navigate(navigateTo || "/questions");
@@ -82,7 +81,7 @@ const Login = ({ navigateTo }) => {
         />
         <div className="login-footer">
           <div className="btn_indicator_container_login">
-            <button className="form_postBtn" onClick={handleSubmit}>
+            <button className="form_postBtn" id="loginPageButton" onClick={handleSubmit}>
               Login
             </button>
           </div>
