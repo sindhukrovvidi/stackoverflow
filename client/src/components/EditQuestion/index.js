@@ -2,19 +2,24 @@ import { useState, useContext } from "react";
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
-import "./index.css";
 import { validateHyperlink } from "../../tool";
 import { useNavigate } from "react-router-dom";
-import { addQuestion } from "../../services/questionService";
 import { AuthContext } from "../../AuthContextProvider";
+import { useLocation, useParams } from 'react-router-dom';
+import { updateQuestion } from "../../services/questionService";
 
-const NewQuestion = () => {
+const EditQuestion = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { qid } = useParams();
+
+  const {currTitle, currText,currTags} = location.state || {}
+
   const { csrfToken } = useContext(AuthContext);
 
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [tag, setTag] = useState("");
+  const [title, setTitle] = useState(currTitle);
+  const [text, setText] = useState(currText);
+  const [tag, setTag] = useState(currTags);
 
   const [titleErr, setTitleErr] = useState("");
   const [textErr, setTextErr] = useState("");
@@ -23,7 +28,7 @@ const NewQuestion = () => {
   const handleQuestions = () => {
     navigate("/questions");
   };
-  const postQuestion = async () => {
+  const updateTheQuestion = async () => {
     let isValid = true;
     if (!title) {
       setTitleErr("Title cannot be empty");
@@ -69,10 +74,10 @@ const NewQuestion = () => {
       title: title,
       text: text,
       tags: tags,
-      ask_date_time: new Date(),
+      modifiedOn: new Date(),
     };
 
-    const res = await addQuestion(question, csrfToken);
+    const res = await updateQuestion(qid, question, csrfToken);
     if (res && res._id) {
       handleQuestions();
     }
@@ -108,10 +113,10 @@ const NewQuestion = () => {
         <button
           className="form_postBtn"
           onClick={() => {
-            postQuestion();
+            updateTheQuestion();
           }}
         >
-          Post Question
+          Update Question
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>
@@ -119,4 +124,4 @@ const NewQuestion = () => {
   );
 };
 
-export default NewQuestion;
+export default EditQuestion;

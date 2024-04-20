@@ -6,25 +6,32 @@ import { logoutUser } from "../../services/userService";
 
 const Header = ({ search, setSearchResults }) => {
   const [val, setVal] = useState(search);
-  const { isAuthenticated, signOutAuth } = useContext(AuthContext);
+  const { loggedIn, signOutAuth, updateUser, csrfToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const Login = () => {
     navigate('/login');
   };
 
+
   const signOut = async() => {
-    await logoutUser();
+    await logoutUser(csrfToken);
     signOutAuth();
+    updateUser("")
     navigate('/questions');
   }
+
+  const goToProfile = () => {
+    navigate('/profile'); // assuming the profile page route is '/profile'
+  };
+
 
   return (
     <div id="header" className="header">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2560px-Stack_Overflow_logo.svg.png"
         style={{ width: "25%", height: "50%" }}
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/questions")}
       ></img>
       <input
         style={{ width: "50%" }}
@@ -42,15 +49,23 @@ const Header = ({ search, setSearchResults }) => {
           }
         }}
       />
-      {isAuthenticated ? (
-        <button
-          className="form_postBtn"
-          onClick={() => {
-            signOut();
-          }}
-        >
-          Sign Out
-        </button>
+      {loggedIn ? (
+        <>
+          <button
+            className="form_postBtn"
+            onClick={goToProfile}
+          >
+            Profile
+          </button>
+          <button
+            className="form_postBtn"
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign Out
+          </button>
+        </>
       ) : (
         <button className="form_postBtn" onClick={Login}>
           Login
