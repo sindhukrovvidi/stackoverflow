@@ -37,7 +37,7 @@ const addQuestion = async (req, res) => {
     const newQuestion = await Question.create({
       title: title,
       text: text,
-      asked_by: req.session.user ? req.session.user._id : null,
+      asked_by: req.session.user ? req.session.user._id : 'unknownUser',
       tags: addedTags,
       ask_date_time: ask_date_time,
       answers: answers || [],
@@ -53,11 +53,27 @@ const addQuestion = async (req, res) => {
 const getQuestionById = async (req, res) => {
   try {
     const questionId = req.params.qid;
-    const updatedQuestion = await Question.findOneAndUpdate(
+    let updatedQuestion = await Question.findOneAndUpdate(
       { _id: questionId },
       { $inc: { views: 1 } },
       { new: true }
-    ).populate("answers");
+    ).populate({
+      path: "answers",
+      populate: { path: "ans_by", select: "username" }
+    })
+    .populate({ path: "asked_by", select: "username" }).lean();
+
+    if (updatedQuestion.asked_by) {
+      const username = updatedQuestion.asked_by.username;
+      updatedQuestion.asked_by = username;
+    }
+
+    updatedQuestion.answers.forEach((answer) => {
+      if (answer.ans_by) {
+        const answerBy = answer?.ans_by?.username;
+        answer.ans_by = answerBy;
+      }
+    });
 
     if (!updatedQuestion) {
       return res.status(404).json({ error: "Question not found" });

@@ -11,7 +11,7 @@ const addAnswer = async (req, res) => {
 
         const newAnswer = await Answer.create({
             text: ans.text,
-            ans_by: ans.ans_by,
+            ans_by: req.session.user ? req.session.user._id : 'unknownUser',
             ans_date_time: ans.ans_date_time
         });
 
