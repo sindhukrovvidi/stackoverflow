@@ -19,7 +19,7 @@ const Header = ({ search, setSearchResults }) => {
     signOutAuth();
     navigate('/questions');
   }
-=======
+
   const goToProfile = () => {
     navigate('/profile'); // assuming the profile page route is '/profile'
   };

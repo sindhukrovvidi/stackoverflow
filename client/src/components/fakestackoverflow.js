@@ -70,7 +70,6 @@ export default function fakeStackOverflow() {
         />
         <div id="right_main" className="right_main">
           <Routes>
-
             <Route
               exact
               path="/addAnswer/:qid"
@@ -113,20 +112,9 @@ export default function fakeStackOverflow() {
               }
             />
 =======
-            <Route exact path="/addAnswer/:qid" element={<ProtectedRoute />}>
-              <Route exact path="/addAnswer/:qid" element={<NewAnswer handleAnswer={handleAnswer}/>} />
-            </Route>
-            <Route exact path="/addQuestion" element={<ProtectedRoute />}>
-              <Route exact path="/addQuestion" element={<NewQuestion />} />
-            </Route>
-            <Route exact path="/login" element={<Login/>} />
-            <Route exact path="/register" element={<SignUp />} />
             <Route exact path="/profile" element={<UserProfile />} />
             <Route exact path="/editprofile" element={<EditUserProfile />} />
-            <Route exact path="/questions" element={<QuestionPage title_text={title} handleNewQuestion={handleNewQuestion} handleAnswer={handleAnswer} search={search} clickTag={clickTag}/>} />
-            <Route exact path="/answer/:qid" element={<AnswerPage handleNewQuestion={handleNewQuestion} handleNewAnswer={handleNewAnswer}/>} />
-            <Route exact path="/tags" element={<TagPage handleNewQuestion={handleNewQuestion} clickTag={clickTag}/>} />
-
+            
           </Routes>
         </div>
       </div>
