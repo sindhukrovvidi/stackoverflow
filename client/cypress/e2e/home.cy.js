@@ -2,61 +2,15 @@ describe("Cypress Tests repeated from React assignment", () => {
   beforeEach(() => {
     cy.exec("node ../server/init.js mongodb://127.0.0.1:27017/fake_so");
 
-    cy.intercept('POST', 'http://localhost:8000/users/login', (req) => {
-      req.reply((res) => {
-        res.send({ fixture: 'login-response.json' });
-      });
-    }).as('loginRequest');
-    // cy.exec("node ../server/remove_db.js mongodb://127.0.0.1:27017/fake_so");
-    // Login to get the access token
     cy.visit("http://localhost:3000/login");
     cy.get("#loginEmail").type("sindhuk@gmail.com");
     cy.get("#loginPassword").type("password");
     cy.contains("Login").click();
-
-    cy.window().then((win) => {
-          win.localStorage.setItem("stackOverflowJwtToken", 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MjFhNDI1NDc4ZjE3M2VlYWI2OWQ4NyIsImlhdCI6MTcxMzQ4MDc1NywiZXhwIjoxNzEzNDg0MzU3fQ.jSBMtXnZIl_adUbBQUmG6FOYLBo-lgufUFV0gaGJiDI');
-        });
-    // cy.wait('@loginRequest').then((interception) => {
-    //   // Get the access token from the mocked response
-    //   const accessToken = interception.response.body.token;
-
-    //   // Set the access token in localStorage
-    //   cy.window().its('localStorage').invoke('setItem', 'accessToken', accessToken);
-    // });
-
-    // cy.window().its('localStorage.accessToken').should('exist');
-
-    // Make an API call to the authentication endpoint
-    // cy.request({
-    //   method: "POST",
-    //   url: "/api/users/login", // Replace with your actual authentication endpoint
-    //   body: { email: "sindhuk@gmail.com", password: "password" },
-    // }).then((response) => {
-    //   // Extract the access token from the response
-    //   const accessToken = response.body.token;
-
-    //   // Set the access token in the localStorage
-    //   cy.window().then((win) => {
-    //     win.localStorage.setItem("stackOverflowJwtToken", accessToken);
-    //   });
-    // });
   });
-
-  // beforeEach(() => {
-  //   cy.visit("http://localhost:3000/login");
-  //   cy.window().then((win) => {
-  //     win.localStorage.setItem('stackOverflowJwtToken', 'sampleToken');
-  //   });
-  //   // Seed the database before each test
-
-  //   // cy.visit('/addQuestion');
-  //   // cy.exec("node ../server/populate_db.js mongodb://127.0.0.1:27017/fake_so");
-  // });
 
   afterEach(() => {
     //   // Clear the database after each test
-      cy.exec("node ../server/destroy.js mongodb://127.0.0.1:27017/fake_so");
+    cy.exec("node ../server/destroy.js mongodb://127.0.0.1:27017/fake_so");
   });
 
   it('1.1 | Adds three questions and one answer, then click "Questions", then click unanswered button, verifies the sequence', () => {
@@ -69,7 +23,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question A");
     cy.get("#formTextInput").type("Test Question A Text");
     cy.get("#formTagInput").type("javascript");
-    cy.get("#formUsernameInput").type("mks1");
+    // cy.get("#formUsernameInput").type("mks1");
     cy.contains("Post Question").click();
 
     // add another question
@@ -77,7 +31,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question B");
     cy.get("#formTextInput").type("Test Question B Text");
     cy.get("#formTagInput").type("javascript");
-    cy.get("#formUsernameInput").type("mks2");
+    // cy.get("#formUsernameInput").type("mks2");
     cy.contains("Post Question").click();
 
     // add another question
@@ -85,13 +39,13 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question C");
     cy.get("#formTextInput").type("Test Question C Text");
     cy.get("#formTagInput").type("javascript");
-    cy.get("#formUsernameInput").type("mks3");
+    // cy.get("#formUsernameInput").type("mks3");
     cy.contains("Post Question").click();
 
     // add an answer to question A
     cy.contains("Test Question A").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("abc3");
+    // cy.get("#answerUsernameInput").type("abc3");
     cy.get("#answerTextInput").type("Answer Question A");
     cy.contains("Post Answer").click();
 
@@ -142,7 +96,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question 1");
     cy.get("#formTextInput").type("Test Question 1 Text");
     cy.get("#formTagInput").type("javascript");
-    cy.get("#formUsernameInput").type("joym");
+    // cy.get("#formUsernameInput").type("joym");
     cy.contains("Post Question").click();
 
     cy.visit("http://localhost:3000/questions");
@@ -150,7 +104,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question 2");
     cy.get("#formTextInput").type("Test Question 2 Text");
     cy.get("#formTagInput").type("react");
-    cy.get("#formUsernameInput").type("abhi");
+    // cy.get("#formUsernameInput").type("abhi");
     cy.contains("Post Question").click();
 
     cy.visit("http://localhost:3000/questions");
@@ -158,7 +112,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question 3");
     cy.get("#formTextInput").type("Test Question 3 Text");
     cy.get("#formTagInput").type("java");
-    cy.get("#formUsernameInput").type("abhi");
+    // cy.get("#formUsernameInput").type("abhi");
     cy.contains("Post Question").click();
 
     // verify the presence of multiple questions in most recently added order.
@@ -193,10 +147,10 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question Q1");
     cy.get("#formTextInput").type("Test Question Q1 Text T1");
     cy.get("#formTagInput").type("javascript");
-    cy.get("#formUsernameInput").type("new user 32");
+    // cy.get("#formUsernameInput").type("new user 32");
     cy.contains("Post Question").click();
     cy.contains("5 questions");
-    cy.contains("new user 32 asked 0 seconds ago");
+    cy.contains("testUser asked 0 seconds ago");
     const answers = [
       "0 answers",
       "1 answers",
@@ -258,7 +212,7 @@ describe("Cypress Tests repeated from React assignment", () => {
 
   it("4.1 | Search a question by tag (t1)", () => {
     const qTitles = ["Programmatically navigate using React router"];
-  cy.visit("http://localhost:3000/questions");
+    cy.visit("http://localhost:3000/questions");
     cy.get("#searchBar").type("[react]{enter}");
     cy.get(".postTitle").each(($el, index, $list) => {
       cy.wrap($el).should("contain", qTitles[index]);
@@ -316,13 +270,13 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.visit("http://localhost:3000/questions");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("joym");
+    // cy.get("#answerUsernameInput").type("joym");
     cy.get("#answerTextInput").type(answers[0]);
     cy.contains("Post Answer").click();
     cy.get(".answerText").each(($el, index) => {
       cy.contains(answers[index]);
     });
-    cy.contains("joym");
+    cy.contains("testUser");
     cy.contains("0 seconds ago");
   });
 
@@ -339,7 +293,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.visit("http://localhost:3000/questions");
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("joym");
+    // cy.get("#answerUsernameInput").type("joym");
     cy.contains("Post Answer").click();
     cy.contains("Answer text cannot be empty");
   });
@@ -352,13 +306,13 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question A");
     cy.get("#formTextInput").type("Test Question A Text");
     cy.get("#formTagInput").type("javascript");
-    cy.get("#formUsernameInput").type("mks0");
+    // cy.get("#formUsernameInput").type("mks0");
     cy.contains("Post Question").click();
 
     // add an answer to question of React Router
     cy.contains("Programmatically navigate using React router").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("mks1");
+    // cy.get("#answerUsernameInput").type("mks1");
     cy.get("#answerTextInput").type("Answer to React Router");
     cy.contains("Post Answer").click();
 
@@ -370,7 +324,7 @@ describe("Cypress Tests repeated from React assignment", () => {
       "android studio save string shared preference, start activity and load the saved string"
     ).click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("mks1");
+    // cy.get("#answerUsernameInput").type("mks1");
     cy.get("#answerTextInput").type("Answer to android studio");
     cy.contains("Post Answer").click();
 
@@ -381,7 +335,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     // add an answer to question A
     cy.contains("Test Question A").click();
     cy.contains("Answer Question").click();
-    cy.get("#answerUsernameInput").type("mks2");
+    // cy.get("#answerUsernameInput").type("mks2");
     cy.get("#answerTextInput").type("Answer Question A");
     cy.contains("Post Answer").click();
 
@@ -430,7 +384,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question A");
     cy.get("#formTextInput").type("Test Question A Text");
     cy.get("#formTagInput").type("test1 test2 test3");
-    cy.get("#formUsernameInput").type("mks1");
+    // cy.get("#formUsernameInput").type("mks1");
     cy.contains("Post Question").click();
 
     // clicks tags
@@ -491,7 +445,7 @@ describe("Cypress Tests repeated from React assignment", () => {
     cy.get("#formTitleInput").type("Test Question A");
     cy.get("#formTextInput").type("Test Question A Text");
     cy.get("#formTagInput").type("test1-tag1");
-    cy.get("#formUsernameInput").type("mks1");
+    // cy.get("#formUsernameInput").type("mks1");
     cy.contains("Post Question").click();
 
     // clicks tags
@@ -509,7 +463,7 @@ describe("Cypress Tests repeated from React assignment", () => {
       "Here is a link: [Google](https://www.google.com)"
     );
     cy.get("#formTagInput").type("markdown");
-    cy.get("#formUsernameInput").type("user1");
+    // cy.get("#formUsernameInput").type("user1");
     cy.contains("Post Question").click();
     cy.contains("How to add a hyperlink in Markdown?").click();
     cy.get("#questionBody")

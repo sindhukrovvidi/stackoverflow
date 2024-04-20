@@ -26,7 +26,7 @@ const getQuestionsByFilter = async (req, res) => {
 
 const addQuestion = async (req, res) => {
   try {
-    const { title, text, tags, ask_date_time, asked_by, answers } = req.body;
+    const { title, text, tags, ask_date_time, answers } = req.body;
 
     const addTagPromises = tags.map(async (tag) => {
       return await addTag(tag);
@@ -37,7 +37,7 @@ const addQuestion = async (req, res) => {
     const newQuestion = await Question.create({
       title: title,
       text: text,
-      asked_by: asked_by,
+      asked_by: req.session.user ? req.session.user._id : null,
       tags: addedTags,
       ask_date_time: ask_date_time,
       answers: answers || [],

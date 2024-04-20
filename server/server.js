@@ -1,49 +1,37 @@
 // Application server
 
-const express = require("express");
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const csurf = require('csurf');
 const mongoose = require("mongoose");
-const jwt = require('jsonwebtoken');
-const keys = require('./config/keys');
-
+const cors = require('cors');
 const { MONGO_URL, port, CLIENT_URL } = require("./config");
-const cors = require("cors");
-
 mongoose.connect(MONGO_URL);
 
 const app = express();
-const authorizedPaths = ['/question/addQuestion', '/question/addAnswer']
 
-function verifyToken(req, res, next) {
-    const token = req.headers['authorization'];
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
+// Set up middleware
+app.use(bodyParser.json());
+app.use(session({
+  secret: 'your-secret-key',    
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(cors({ origin: CLIENT_URL, credentials: true }));
+app.use(csurf());
 
-    jwt.verify(token, keys.secretOrKey, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-        req.user = decoded;
-        next();
-    });
-}
-
-app.use(
-    cors({
-        credentials: true,
-        origin: [CLIENT_URL],
-    })
-);
-
-app.use(express.json());
-
-app.use((req, res, next) => {
-    if (authorizedPaths.includes(req.path)) {
-        verifyToken(req, res, next);
-    } else {
-        next();
-    }
+app.get('/csrf-token', (req, res) => {
+    console.log("This is the server code ", req.csrfToken())
+  res.json({ csrfToken: req.csrfToken() });
 });
+
+// Check login status route
+app.get('/check-login', (req, res) => {
+  const user = req.session.user;
+  res.json({ loggedIn: !!user, user });
+});
+
 
 app.get("/", (_, res) => {
     res.send("Fake SO Server Dummy Endpoint");

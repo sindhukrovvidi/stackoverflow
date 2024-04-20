@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import SideBarNav from "./SideBarNav";
-import {
-  Route,
-  useNavigate,
-  Routes,
-} from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute/index.js";
+import { Route, useNavigate, Routes } from "react-router-dom";
 import Login from "./Login/index.js";
 import SignUp from "./SignUp/index.js";
 import NewAnswer from "./NewAnswer/index.js";
@@ -19,14 +14,14 @@ import EditUserProfile from "./UserProfile/editprofileindex.js";
 
 export default function fakeStackOverflow() {
   const [selectedTab, setSelectedTab] = useState("q");
-  const [title, setQuestionPageTitle] = useState("All Questions")
+  const [title, setQuestionPageTitle] = useState("All Questions");
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   const handleQuestions = () => {
-    setSearch("")
+    setSearch("");
     setSelectedTab("q");
-    setQuestionPageTitle('All Questions')
+    setQuestionPageTitle("All Questions");
     navigate("/questions");
   };
 
@@ -48,20 +43,20 @@ export default function fakeStackOverflow() {
   };
 
   const handleNewAnswer = (qid) => {
-    navigate(`/addAnswer/${qid}`)
-  }
+    navigate(`/addAnswer/${qid}`);
+  };
 
   const clickTag = (tagName) => {
-    setQuestionPageTitle(tagName)
+    setQuestionPageTitle(tagName);
     setSearch(`[${tagName}]`);
     navigate("/questions");
-  }
+  };
 
   const setSearchResults = (value, title) => {
-    setSearch(value)
-    setQuestionPageTitle(value !=="" ? title: 'All Questions')
+    setSearch(value);
+    setQuestionPageTitle(value !== "" ? title : "All Questions");
     navigate("/questions");
-  }
+  };
 
   return (
     <div id="main-content" style={{ height: "100vh" }}>
@@ -75,6 +70,49 @@ export default function fakeStackOverflow() {
         />
         <div id="right_main" className="right_main">
           <Routes>
+
+            <Route
+              exact
+              path="/addAnswer/:qid"
+              element={<NewAnswer handleAnswer={handleAnswer} />}
+            />
+            <Route exact path="/addQuestion" element={<NewQuestion />} />
+            <Route exact path="/login" element={<Login navigateTo={"/"} />} />
+            <Route exact path="/register" element={<SignUp />} />
+            <Route
+              exact
+              path="/questions"
+              element={
+                <QuestionPage
+                  title_text={title}
+                  handleNewQuestion={handleNewQuestion}
+                  handleAnswer={handleAnswer}
+                  search={search}
+                  clickTag={clickTag}
+                />
+              }
+            />
+            <Route
+              exact
+              path="/answer/:qid"
+              element={
+                <AnswerPage
+                  handleNewQuestion={handleNewQuestion}
+                  handleNewAnswer={handleNewAnswer}
+                />
+              }
+            />
+            <Route
+              exact
+              path="/tags"
+              element={
+                <TagPage
+                  handleNewQuestion={handleNewQuestion}
+                  clickTag={clickTag}
+                />
+              }
+            />
+=======
             <Route exact path="/addAnswer/:qid" element={<ProtectedRoute />}>
               <Route exact path="/addAnswer/:qid" element={<NewAnswer handleAnswer={handleAnswer}/>} />
             </Route>

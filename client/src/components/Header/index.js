@@ -2,19 +2,28 @@ import "./index.css";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContextProvider";
+import { logoutUser } from "../../services/userService";
 
 const Header = ({ search, setSearchResults }) => {
   const [val, setVal] = useState(search);
-  const { isAuthenticated, signOut } = useContext(AuthContext);
+  const { isAuthenticated, signOutAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const Login = () => {
     navigate('/login');
   };
 
+
+  const signOut = async() => {
+    await logoutUser();
+    signOutAuth();
+    navigate('/questions');
+  }
+=======
   const goToProfile = () => {
     navigate('/profile'); // assuming the profile page route is '/profile'
   };
+
 
   return (
     <div id="header" className="header">
