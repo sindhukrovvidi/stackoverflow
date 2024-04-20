@@ -13,12 +13,18 @@ const Header = ({ search, setSearchResults }) => {
     navigate('/login');
   };
 
+
   const signOut = async() => {
     await logoutUser(csrfToken);
     signOutAuth();
     updateUser("")
     navigate('/questions');
   }
+
+  const goToProfile = () => {
+    navigate('/profile'); // assuming the profile page route is '/profile'
+  };
+
 
   return (
     <div id="header" className="header">
@@ -44,14 +50,22 @@ const Header = ({ search, setSearchResults }) => {
         }}
       />
       {loggedIn ? (
-        <button
-          className="form_postBtn"
-          onClick={() => {
-            signOut();
-          }}
-        >
-          Sign Out
-        </button>
+        <>
+          <button
+            className="form_postBtn"
+            onClick={goToProfile}
+          >
+            Profile
+          </button>
+          <button
+            className="form_postBtn"
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign Out
+          </button>
+        </>
       ) : (
         <button className="form_postBtn" onClick={Login}>
           Login
