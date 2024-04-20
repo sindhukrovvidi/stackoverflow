@@ -1,15 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import { registerUser } from "../../services/userService";
-import { AuthContext } from "../../AuthContextProvider";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [contact_no, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const {csrfToken} = useContext(AuthContext);
 
   const handleSubmit = async () => {
     // e.preventDefault();
@@ -18,8 +16,7 @@ const SignUp = () => {
         email,
         username,
         password,
-        contact_no,
-        csrfToken
+        contact_no
       );
       console.log(response.data);
     } catch (error) {

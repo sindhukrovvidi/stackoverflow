@@ -3,28 +3,20 @@ import React, { createContext, useState } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState("");
-  const [csrfToken, setCsrfToken] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem('stackOverflowJwtToken') ? true : false
+  );
 
   const signIn = () => {
-    setLoggedIn(true);
+    setIsAuthenticated(true);
   };
 
   const signOutAuth = () => {
-    setLoggedIn(false);
+    setIsAuthenticated(false);
   };
 
-  const updateCsrfToken = (token) => {
-    setCsrfToken(token)
-  }
-
-  const updateUser = (user) => {
-    setUser(user)
-  }
-
   return (
-    <AuthContext.Provider value={{ loggedIn, signIn, signOutAuth, updateUser, updateCsrfToken, csrfToken, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, signOutAuth }}>
       {children}
     </AuthContext.Provider>
   );

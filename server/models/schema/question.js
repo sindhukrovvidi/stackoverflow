@@ -10,8 +10,6 @@ module.exports = mongoose.Schema(
     views: { type: Number, default: 0 },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
     answers: [{ type: Schema.Types.ObjectId, ref: "Answer" }],
-    modifiedOn: {type: Date}
-
   },
   { collection: "Question" }
 );
