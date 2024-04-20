@@ -1,11 +1,11 @@
 import "./index.css";
 
-const OrderButton = ({ message, setQuestionOrder }) => {
+const OrderButton = ({ message, setQuestionOrder, isActive }) => {
     return (
         <button
-            className="btn"
+        className={`btn ${isActive ? 'active' : ''}`}
             onClick={() => {
-                setQuestionOrder(message);
+                setQuestionOrder(message.toLowerCase());
             }}
         >
             {message}

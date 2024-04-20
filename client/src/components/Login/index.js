@@ -6,17 +6,18 @@ import Input from "../baseComponents/input";
 import { loginUser } from "../../services/userService";
 import { AuthContext } from "../../AuthContextProvider";
 
-const Login = ({navigateTo}) => {
+const Login = ({ navigateTo }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
-      const response = await loginUser(email, password);
-      signIn(response.token);
-      navigate(navigateTo);
+      await loginUser(email, password);
+      signIn();
+      navigate(navigateTo || "/questions");
     } catch (error) {
       console.error(error);
     }
@@ -25,8 +26,18 @@ const Login = ({navigateTo}) => {
   return (
     <div className="login-container">
       <Form title={"Login"}>
-        <Input title={"Email"} id={"loginEmail"} val={email} setState={setEmail} />
-        <Input title={"Password"} id={"loginPassword"} val={password} setState={setPassword} />
+        <Input
+          title={"Email"}
+          id={"loginEmail"}
+          val={email}
+          setState={setEmail}
+        />
+        <Input
+          title={"Password"}
+          id={"loginPassword"}
+          val={password}
+          setState={setPassword}
+        />
         <div className="login-footer">
           <div className="btn_indicator_container_login">
             <button className="form_postBtn" onClick={handleSubmit}>

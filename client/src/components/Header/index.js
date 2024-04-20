@@ -2,15 +2,22 @@ import "./index.css";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContextProvider";
+import { logoutUser } from "../../services/userService";
 
-const Header = ({ search, setQuesitonPage }) => {
+const Header = ({ search, setSearchResults }) => {
   const [val, setVal] = useState(search);
-  const { isAuthenticated, signOut } = useContext(AuthContext);
+  const { isAuthenticated, signOutAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const Login = () => {
     navigate('/login');
   };
+
+  const signOut = async() => {
+    await logoutUser();
+    signOutAuth();
+    navigate('/questions');
+  }
 
   return (
     <div id="header" className="header">
@@ -31,7 +38,7 @@ const Header = ({ search, setQuesitonPage }) => {
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            setQuesitonPage(e.target.value, "Search Results");
+            setSearchResults(e.target.value, "Search Results");
           }
         }}
       />

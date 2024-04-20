@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react';
-// import _axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -8,20 +7,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem('stackOverflowJwtToken') ? true : false
   );
 
-  const signIn = (token) => {
-    localStorage.setItem('stackOverflowJwtToken', token)
+  const signIn = () => {
     setIsAuthenticated(true);
   };
 
-  const signOut = () => {
-    localStorage.removeItem('stackOverflowJwtToken');
-    // _axios.defaults.headers.common['Authorization'] = null;
-
+  const signOutAuth = () => {
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, signOutAuth }}>
       {children}
     </AuthContext.Provider>
   );

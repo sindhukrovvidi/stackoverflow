@@ -7,7 +7,7 @@ import Login from '../Login';
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
-  return isAuthenticated ? <Outlet /> : <Login navigateTo={'/answer'}/>;
+  return isAuthenticated ? <Outlet /> : <Login navigateTo={'/questions'}/>;
 };
 
 export default ProtectedRoute;

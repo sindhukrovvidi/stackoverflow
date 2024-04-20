@@ -12,7 +12,7 @@ const getTagsWithQuestionNumber = async (req, res) => {
       const tagsWithQuestionNumber = tags.map(async (tag) => {
         const questionCount = questions.filter(
           question => question.tags?.some(ele => ele.name === (tag.name))
-        ).length; // Single filter with some() for checking tag existence
+        ).length;
   
         return { name: tag.name, qcnt: questionCount };
       });
@@ -27,6 +27,5 @@ const getTagsWithQuestionNumber = async (req, res) => {
   
 
 router.get('/getTagsWithQuestionNumber', getTagsWithQuestionNumber)
-// add appropriate HTTP verbs and their endpoints to the router.
 
 module.exports = router;

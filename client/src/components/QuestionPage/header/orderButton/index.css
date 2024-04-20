@@ -2,3 +2,8 @@
     background: #ffffff;
     border: #000000 1px solid;
 }
+
+.btn.active {
+    background: #ffffff;
+    border: blue 1px solid;
+}
