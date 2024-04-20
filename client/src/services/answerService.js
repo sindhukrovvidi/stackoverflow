@@ -22,5 +22,13 @@ const updateAnswer = async (aid, q, csrfToken) => {
     return res.data;
 };
 
+const deleteAnswerById = async (aid, csrfToken) => {
+  const res = await api.delete(`${ANSWER_API_URL}/deleteAnswerById/${aid}`,  {   headers: {
+      'x-csrf-token': csrfToken,
+    },
+    withCredentials: true, });
 
-export { addAnswer, updateAnswer };
+  return res;
+};
+
+export { addAnswer, updateAnswer, deleteAnswerById };

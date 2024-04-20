@@ -6,6 +6,7 @@ import { validateHyperlink } from "../../tool";
 import { AuthContext } from "../../AuthContextProvider";
 import { updateAnswer } from "../../services/answerService";
 import { ToastContainer, toast } from "react-toastify";
+import { deleteAnswerById } from "../../services/answerService";
 
 const EditAnswer = ({ handleAnswer }) => {
   const { csrfToken } = useContext(AuthContext);
@@ -49,6 +50,23 @@ const EditAnswer = ({ handleAnswer }) => {
     }
   };
 
+  const deleteTheAnswer = async () => {
+    try {
+      const res = await deleteAnswerById(aid, csrfToken);
+      if (res?.data?.status === 200 || res?.response?.data?.status === 200) {
+        toast.success("Successfully deleted the answer!");
+        handleAnswer(qid);
+      } else {
+        toast.error(
+          res?.response?.data?.message ||
+            "Unable to delete the answer, login and try again!"
+        );
+      }
+    } catch (error) {
+      console.log("Error while deleting the question ", error);
+    }
+  }
+
   return (
     <Form>
       <ToastContainer />
@@ -67,6 +85,14 @@ const EditAnswer = ({ handleAnswer }) => {
           }}
         >
           Update Answer
+        </button>
+        <button
+          className="form_delete_postBtn"
+          onClick={() => {
+            deleteTheAnswer();
+          }}
+        >
+          Delete Answer
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>
