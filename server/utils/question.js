@@ -22,7 +22,16 @@ const addTag = async (tname) => {
 const getQuestionsByOrder = async (order) => {
   const questions = await Question.find()
     .populate({ path: "tags" })
-    .populate({ path: "answers" });
+    .populate({ path: "asked_by", select: "username" })
+    .populate({ path: "answers" })
+    .lean();
+
+  questions.forEach((question) => {
+    if (question.asked_by) {
+      question.asked_by = question.asked_by.username;
+    }
+  });
+
   let result = [];
   switch (order) {
     case "active": {
