@@ -1,18 +1,22 @@
-// import "./index.css";
 import { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Form from "../baseComponents/form";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
-import { addAnswer } from "../../services/answerService";
 import { AuthContext } from "../../AuthContextProvider";
+import { updateAnswer } from "../../services/answerService";
 
-const NewAnswer = ({ handleAnswer }) => {
-  const { qid } = useParams();
-  const [text, setText] = useState("");
-  const [textErr, setTextErr] = useState("");
+const EditAnswer = ({ handleAnswer }) => {
   const { csrfToken } = useContext(AuthContext);
-  const postAnswer = async () => {
+  const location = useLocation();
+  const { aid } = useParams();
+
+  const { currText, qid} = location.state || {}
+
+  const [text, setText] = useState(currText);
+  const [textErr, setTextErr] = useState("");
+
+  const updateTheAnswer = async () => {
     let isValid = true;
 
     if (!text) {
@@ -32,14 +36,15 @@ const NewAnswer = ({ handleAnswer }) => {
 
     const answer = {
       text: text,
-      ans_date_time: new Date(),
+      modifiedOn: new Date(),
     };
 
-    const res = await addAnswer(qid, answer, csrfToken);
+    const res = await updateAnswer(aid, answer, csrfToken);
     if (res && res._id) {
       handleAnswer(qid);
     }
   };
+
   return (
     <Form>
       <Textarea
@@ -53,10 +58,10 @@ const NewAnswer = ({ handleAnswer }) => {
         <button
           className="form_postBtn"
           onClick={() => {
-            postAnswer();
+            updateTheAnswer();
           }}
         >
-          Post Answer
+          Update Answer
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>
@@ -64,4 +69,4 @@ const NewAnswer = ({ handleAnswer }) => {
   );
 };
 
-export default NewAnswer;
+export default EditAnswer;

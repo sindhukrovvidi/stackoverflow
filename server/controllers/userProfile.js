@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const UserProfile = require("../models/userProfile");
+const csrf = require('csurf')({ ignoreMethods: ['POST'] }); 
 
 const register = async (req, res) => {
   try {
@@ -28,7 +29,9 @@ const login = async (req, res) => {
     }
 
     if (user) {
+      console.log("Found the user ", user)
       req.session.user = user;
+      console.log("Setting the user in session ", req.session.user)
       res.json({ success: true, user });
     } else {
       res.status(401).json({ success: false, message: "Invalid credentials" });
@@ -41,7 +44,9 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   if (req.session) {
+    console.log("This is the session before logout ", req.session)
     req.session.destroy();
+    console.log("This is the session after logout ", req.session)
     res.json({ success: true });
   } else {
     res.json({ success: false });
@@ -71,9 +76,11 @@ const getCurrentUserDetails = async (req, res) => {
   }
 };
 
+router.use(csrf);
+
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
-router.post("/getCurrentUser", getCurrentUser);
-router.post("/getCurrentUserDetails", getCurrentUserDetails);
+router.get("/getCurrentUser", getCurrentUser);
+router.get("/getCurrentUserDetails", getCurrentUserDetails);
 module.exports = router;

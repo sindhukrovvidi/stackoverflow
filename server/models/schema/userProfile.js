@@ -8,7 +8,8 @@ module.exports = mongoose.Schema(
         about: { type: String , default:'missing'},
         institution:{type: String, default:'missing'},
         contact_no: {type: String, required: true},
-        createdOn: {type: Date, default: Date.now}
+        createdOn: {type: Date, default: Date.now},
+        modifiedOn: {type: Date}
     },
     { collection: "UserProfile" }
 );

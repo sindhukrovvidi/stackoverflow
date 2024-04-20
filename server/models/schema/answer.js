@@ -5,7 +5,8 @@ module.exports = mongoose.Schema(
     {
         text: {type: String, required: true},
         ans_by: { type: Schema.Types.ObjectId, ref: "UserProfile" },
-        ans_date_time: {type: Date, default: Date.now}
+        ans_date_time: {type: Date, default: Date.now},
+        modifiedOn: {type: Date}
     },
     { collection: "Answer" }
 );
