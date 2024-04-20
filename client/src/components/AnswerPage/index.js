@@ -49,6 +49,7 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
                 askby={question && question.asked_by}
                 meta={question && getMetaData(new Date(question.ask_date_time))}
                 updateQuestion={updateQuestion}
+                modifiedOn={question && question.modifiedOn ? getMetaData(new Date(question.modifiedOn)) : ''}
             />
             {question &&
                 question.answers &&
