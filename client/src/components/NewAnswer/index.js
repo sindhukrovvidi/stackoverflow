@@ -1,17 +1,13 @@
 // import "./index.css";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "../baseComponents/form";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { addAnswer } from "../../services/answerService";
-import { UserContext } from "../../UserContextProvider";
 
 const NewAnswer = ({ handleAnswer }) => {
   const { qid } = useParams();
-  const { user } = useContext(UserContext);
-
-  console.log("user details ", user)
   const [text, setText] = useState("");
   const [textErr, setTextErr] = useState("");
   const postAnswer = async () => {
@@ -34,7 +30,6 @@ const NewAnswer = ({ handleAnswer }) => {
 
     const answer = {
       text: text,
-      ans_by: user ? user.username : 'testUser',
       ans_date_time: new Date(),
     };
 

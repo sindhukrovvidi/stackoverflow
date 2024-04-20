@@ -6,92 +6,19 @@ describe("Cypress Tests repeated from React assignment", () => {
   beforeEach(() => {
     cy.exec("node ../server/init.js mongodb://127.0.0.1:27017/fake_so");
 
-    cy.intercept('POST', 'http://localhost:8000/users/login', (req) => {
-      req.reply((res) => {
-        res.send({ fixture: 'login-response.json' });
-      });
-    }).as('loginRequest');
-    // cy.exec("node ../server/remove_db.js mongodb://127.0.0.1:27017/fake_so");
-    // Login to get the access token
     cy.visit("http://localhost:3000/login");
     cy.get("#loginEmail").type("sindhuk@gmail.com");
     cy.get("#loginPassword").type("password");
     cy.contains("Login").click();
-
-    // cy.mockUserContext();
-
-    // cy.wrap({ user: { username: "testUser" } }).as("user");
-    // cy.visit("/", {
-    //   onBeforeLoad(win) {
-    //     win.UserContext = {
-    //       Consumer: (props) => props.children({ user: { username: "testUser" } }),
-    //     };
-    //   },
-    // });
-
-    cy.window().then((win) => {
-      // win.UserContext = {
-      //   Consumer: (props) => props.children({ user: { username: "testUser" } }),
-      // };
-          win.localStorage.setItem("stackOverflowJwtToken", 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpbmRodWtyb3Z2aWRpIiwiZW1haWwiOiJzaW5kaHVrQGdtYWlsLmNvbSIsImNvbnRhY3Rfbm8iOiIxMjM0NTQ2NyIsInBhc3N3b3JkIjoiJDJhJDEwJEVxV2ZTWjR6d0E5cUhhNTBOUnpFVy5za0lPTU5IWEljRm9mSWpaQmQveUhRb1UyRkFydW1tIiwiaWF0IjoxNzEzNTAxOTEzLCJleHAiOjE3MTM1MDU1MTN9.ryD5IGGCVOJAnxMUp7VrikkhiMQSBt4Xed4r4QiW9qo');
-        });
-    // cy.wait('@loginRequest').then((interception) => {
-    //   // Get the access token from the mocked response
-    //   const accessToken = interception.response.body.token;
-
-    //   // Set the access token in localStorage
-    //   cy.window().its('localStorage').invoke('setItem', 'accessToken', accessToken);
-    // });
-
-    // cy.window().its('localStorage.accessToken').should('exist');
-
-    // Make an API call to the authentication endpoint
-    // cy.request({
-    //   method: "POST",
-    //   url: "/api/users/login", // Replace with your actual authentication endpoint
-    //   body: { email: "sindhuk@gmail.com", password: "password" },
-    // }).then((response) => {
-    //   // Extract the access token from the response
-    //   const accessToken = response.body.token;
-
-    //   // Set the access token in the localStorage
-    //   cy.window().then((win) => {
-    //     win.localStorage.setItem("stackOverflowJwtToken", accessToken);
-    //   });
-    // });
   });
-
-  // beforeEach(() => {
-  //   cy.visit("http://localhost:3000/login");
-  //   cy.window().then((win) => {
-  //     win.localStorage.setItem('stackOverflowJwtToken', 'sampleToken');
-  //   });
-  //   // Seed the database before each test
-
-  //   // cy.visit('/addQuestion');
-  //   // cy.exec("node ../server/populate_db.js mongodb://127.0.0.1:27017/fake_so");
-  // });
 
   afterEach(() => {
     //   // Clear the database after each test
-      cy.exec("node ../server/destroy.js mongodb://127.0.0.1:27017/fake_so");
+    cy.exec("node ../server/destroy.js mongodb://127.0.0.1:27017/fake_so");
   });
 
   it('1.1 | Adds three questions and one answer, then click "Questions", then click unanswered button, verifies the sequence', () => {
-    const testUser = { username: 'testuser' };
-
-
-    
     cy.visit("http://localhost:3000/questions");
-    cy.window().then((win) => {
-      cy.window().its('UserContext').then((UserContext) => {
-        cy.stub(UserContext, 'updateUser').as('updateUser');
-      });});
-
-
-    cy.window().then((win) => {
-      win.UserContext.updateUser(testUser);
-    });
 
     // add a question
     cy.contains("Ask a Question").click();
@@ -289,7 +216,7 @@ describe("Cypress Tests repeated from React assignment", () => {
 
   it("4.1 | Search a question by tag (t1)", () => {
     const qTitles = ["Programmatically navigate using React router"];
-  cy.visit("http://localhost:3000/questions");
+    cy.visit("http://localhost:3000/questions");
     cy.get("#searchBar").type("[react]{enter}");
     cy.get(".postTitle").each(($el, index, $list) => {
       cy.wrap($el).should("contain", qTitles[index]);

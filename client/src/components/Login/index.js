@@ -5,25 +5,18 @@ import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import { loginUser } from "../../services/userService";
 import { AuthContext } from "../../AuthContextProvider";
-import { UserContext } from "../../UserContextProvider";
 
 const Login = ({ navigateTo }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const { signIn } = useContext(AuthContext);
-  const { updateUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
-      const response = await loginUser(email, password);
-      const userData = { ...response };
-
-      updateUser(userData);
-      signIn(response.token);
-
+      await loginUser(email, password);
+      signIn();
       navigate(navigateTo || "/questions");
     } catch (error) {
       console.error(error);
