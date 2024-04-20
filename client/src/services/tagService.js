@@ -10,4 +10,15 @@ const getTagsWithQuestionNumber = async (csrfToken) => {
 
     return res.data;
 };
-export { getTagsWithQuestionNumber };
+
+const getTagsWithIds = async (tagIds, csrfToken) => {
+    const data = {tagIds};
+    const res = await api.post(`${TAG_API_URL}/getTagsWithIds`,data, {   headers: {
+        'x-csrf-token': csrfToken,
+      },
+      withCredentials: true, });
+
+    return res.data;
+};
+
+export { getTagsWithQuestionNumber, getTagsWithIds };

@@ -34,4 +34,13 @@ const addQuestion = async (q, csrfToken) => {
     return res.data;
 };
 
-export { getQuestionsByFilter, getQuestionById, addQuestion };
+const updateQuestion = async (qid, q, csrfToken) => {
+    const res = await api.post(`${QUESTION_API_URL}/updateQuestion/${qid}`, q, {   headers: {
+        'x-csrf-token': csrfToken,
+      },
+      withCredentials: true, });
+
+    return res.data;
+};
+
+export { getQuestionsByFilter, getQuestionById, addQuestion, updateQuestion };

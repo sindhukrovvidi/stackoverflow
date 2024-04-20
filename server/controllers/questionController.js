@@ -1,5 +1,6 @@
 const express = require("express");
 const Question = require("../models/questions");
+const mongoose = require('mongoose');
 
 const {
   addTag,
@@ -50,6 +51,45 @@ const addQuestion = async (req, res) => {
   }
 };
 
+const updateQuestion = async (req, res) => {
+  try {
+    const questionId = new mongoose.Types.ObjectId(req.params.qid); 
+
+    const { title, text, tags, modifiedOn } = req.body;
+
+    const addTagPromises = tags.map(async (tag) => {
+      return await addTag(tag);
+    });
+
+    let addedTags = await Promise.all(addTagPromises);
+
+    const updateObject = {};
+    if (title) updateObject.title = title;
+    if (modifiedOn) updateObject.modifiedOn = modifiedOn;
+    if (text) updateObject.text = text;
+    if (tags) updateObject.tags = addedTags;
+
+    if (Object.keys(updateObject).length > 0) {
+      const updatedQuestion = await Question.findOneAndUpdate(
+        { _id: questionId },
+        updateObject,
+        { new: true }
+      );
+
+      if (!updatedQuestion) {
+        return res.status(404).json({ error: "Question not found" });
+      }
+
+      res.status(200).send(updatedQuestion);
+    } else {
+      res.status(200).json({ message: "No changes detected in request body" });
+    }
+  } catch (err) {
+    console.error("Error while updating question: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const getQuestionById = async (req, res) => {
   try {
     const questionId = req.params.qid;
@@ -88,4 +128,5 @@ const getQuestionById = async (req, res) => {
 router.get("/getQuestion", getQuestionsByFilter);
 router.post("/addQuestion", addQuestion);
 router.get("/getQuestionById/:qid", getQuestionById);
+router.post("/updateQuestion/:qid", updateQuestion);
 module.exports = router;
