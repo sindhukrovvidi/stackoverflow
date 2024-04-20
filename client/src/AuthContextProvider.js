@@ -7,19 +7,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem('stackOverflowJwtToken') ? true : false
   );
 
-  const signIn = (token) => {
-    localStorage.setItem('stackOverflowJwtToken', token)
+  const signIn = () => {
     setIsAuthenticated(true);
   };
 
-  const signOut = () => {
-    localStorage.removeItem('stackOverflowJwtToken');
-
+  const signOutAuth = () => {
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, signOutAuth }}>
       {children}
     </AuthContext.Provider>
   );

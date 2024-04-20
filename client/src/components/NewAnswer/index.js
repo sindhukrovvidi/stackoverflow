@@ -2,25 +2,16 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "../baseComponents/form";
-import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { addAnswer } from "../../services/answerService";
 
 const NewAnswer = ({ handleAnswer }) => {
   const { qid } = useParams();
-  console.log("Inside New Answer ", qid);
-  const [usrn, setUsrn] = useState("");
   const [text, setText] = useState("");
-  const [usrnErr, setUsrnErr] = useState("");
   const [textErr, setTextErr] = useState("");
   const postAnswer = async () => {
     let isValid = true;
-
-    if (!usrn) {
-      setUsrnErr("Username cannot be empty");
-      isValid = false;
-    }
 
     if (!text) {
       setTextErr("Answer text cannot be empty");
@@ -39,7 +30,6 @@ const NewAnswer = ({ handleAnswer }) => {
 
     const answer = {
       text: text,
-      ans_by: usrn,
       ans_date_time: new Date(),
     };
 
@@ -50,13 +40,6 @@ const NewAnswer = ({ handleAnswer }) => {
   };
   return (
     <Form>
-      <Input
-        title={"Username"}
-        id={"answerUsernameInput"}
-        val={usrn}
-        setState={setUsrn}
-        err={usrnErr}
-      />
       <Textarea
         title={"Answer Text"}
         id={"answerTextInput"}
