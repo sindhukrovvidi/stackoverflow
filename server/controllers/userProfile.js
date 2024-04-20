@@ -8,15 +8,15 @@ const register = async (req, res) => {
     const { username, email, password, contact_no } = req.body;
     let user = await UserProfile.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ status: 400,message: "User already exists" });
     }
     user = new UserProfile({ username, email, password, contact_no });
     await user.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(200).json({ status: 200, message: "User registered successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ status: 500,message: "Internal server error" });
   }
 };
 

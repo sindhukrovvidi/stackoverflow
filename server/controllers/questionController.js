@@ -125,8 +125,33 @@ const getQuestionById = async (req, res) => {
   }
 };
 
+const deleteQuestionById = async (req, res) => {
+  try {
+    const questionId = req.params.qid;
+
+    // Check if the question exists
+    const question = await Question.findById(questionId);
+    if (!question) {
+      return res.status(404).json({status:404, message: "Question not found" });
+    }
+
+    // Check if the answers array is empty
+    if (question.answers.length > 0) {
+      return res.status(400).json({ status: 400, message: "Question cannot be deleted because it has answers" });
+    }
+
+    // If the answers array is empty, delete the question
+    await Question.findByIdAndDelete(questionId);
+    res.status(200).json({ status: 200, message: "Question deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 router.get("/getQuestion", getQuestionsByFilter);
 router.post("/addQuestion", addQuestion);
 router.get("/getQuestionById/:qid", getQuestionById);
 router.post("/updateQuestion/:qid", updateQuestion);
+router.delete("/deleteQuestionById/:qid", deleteQuestionById)
 module.exports = router;

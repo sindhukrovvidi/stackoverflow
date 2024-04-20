@@ -50,8 +50,18 @@
     cursor: pointer;
 }
 
+.form_delete_postBtn {
+    background:red;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 .mandatory_indicator {
     font-size: 0.8rem;
     color: red;
     margin-top: 10px;
+    margin-left: 10px;
 }

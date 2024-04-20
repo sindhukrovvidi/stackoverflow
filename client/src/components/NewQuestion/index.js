@@ -7,6 +7,7 @@ import { validateHyperlink } from "../../tool";
 import { useNavigate } from "react-router-dom";
 import { addQuestion } from "../../services/questionService";
 import { AuthContext } from "../../AuthContextProvider";
+import { ToastContainer, toast } from "react-toastify";
 
 const NewQuestion = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const NewQuestion = () => {
   const handleQuestions = () => {
     navigate("/questions");
   };
+
   const postQuestion = async () => {
     let isValid = true;
     if (!title) {
@@ -74,12 +76,18 @@ const NewQuestion = () => {
 
     const res = await addQuestion(question, csrfToken);
     if (res && res._id) {
-      handleQuestions();
+      toast.success("Successfull added the question");
+      setTimeout(() => {
+        handleQuestions();
+      }, 500);
+    } else {
+      toast.error("Unable to add the question. Login or try after some time!");
     }
   };
 
   return (
     <Form>
+      <ToastContainer />
       <Input
         title={"Question Title"}
         hint={"Limit title to 100 characters or less"}

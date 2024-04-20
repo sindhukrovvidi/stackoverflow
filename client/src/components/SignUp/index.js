@@ -3,6 +3,9 @@ import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import { registerUser } from "../../services/userService";
 import { AuthContext } from "../../AuthContextProvider";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +13,7 @@ const SignUp = () => {
   const [contact_no, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const {csrfToken} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     // e.preventDefault();
@@ -21,9 +25,13 @@ const SignUp = () => {
         contact_no,
         csrfToken
       );
-      console.log(response.data);
+      if(response.status === 200) {
+        navigate("/login")
+      } else {
+        toast.error("Unable to register the user");
+      }
     } catch (error) {
-      console.error(error);
+      toast.error("Unable to register the user");
     }
   };
 
@@ -62,6 +70,7 @@ const SignUp = () => {
         >
           Register
         </button>
+        <ToastContainer />
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>
     </Form>

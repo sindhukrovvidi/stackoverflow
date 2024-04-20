@@ -6,6 +6,7 @@ import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { addAnswer } from "../../services/answerService";
 import { AuthContext } from "../../AuthContextProvider";
+import { ToastContainer, toast } from "react-toastify";
 
 const NewAnswer = ({ handleAnswer }) => {
   const { qid } = useParams();
@@ -37,11 +38,17 @@ const NewAnswer = ({ handleAnswer }) => {
 
     const res = await addAnswer(qid, answer, csrfToken);
     if (res && res._id) {
-      handleAnswer(qid);
+      toast.success('Successfully added answer!')
+      setTimeout(() => {
+        handleAnswer(qid); 
+      }, 500);
+    } else {
+      toast.error('Unable to add the answer!')
     }
   };
   return (
     <Form>
+      <ToastContainer />
       <Textarea
         title={"Answer Text"}
         id={"answerTextInput"}
