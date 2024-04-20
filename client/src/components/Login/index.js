@@ -7,6 +7,9 @@ import { loginUser } from "../../services/userService";
 import { AuthContext } from "../../AuthContextProvider";
 
 const Login = ({ navigateTo }) => {
+=======
+const Login = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signIn } = useContext(AuthContext);
@@ -15,9 +18,15 @@ const Login = ({ navigateTo }) => {
 
   const handleSubmit = async () => {
     try {
+
       await loginUser(email, password);
       signIn();
       navigate(navigateTo || "/questions");
+
+      const response = await loginUser(email, password);
+      signIn(response.token);
+      navigate('/questions');
+
     } catch (error) {
       console.error(error);
     }
