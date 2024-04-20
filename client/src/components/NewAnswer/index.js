@@ -1,15 +1,17 @@
 // import "./index.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Form from "../baseComponents/form";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { addAnswer } from "../../services/answerService";
+import { AuthContext } from "../../AuthContextProvider";
 
 const NewAnswer = ({ handleAnswer }) => {
   const { qid } = useParams();
   const [text, setText] = useState("");
   const [textErr, setTextErr] = useState("");
+  const { csrfToken } = useContext(AuthContext);
   const postAnswer = async () => {
     let isValid = true;
 
@@ -33,7 +35,7 @@ const NewAnswer = ({ handleAnswer }) => {
       ans_date_time: new Date(),
     };
 
-    const res = await addAnswer(qid, answer);
+    const res = await addAnswer(qid, answer, csrfToken);
     if (res && res._id) {
       handleAnswer(qid);
     }

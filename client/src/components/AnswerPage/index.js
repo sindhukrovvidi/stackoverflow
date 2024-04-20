@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from 'react-router-dom';
 import { getMetaData } from "../../tool";
 import Answer from "./answer";
@@ -6,14 +6,16 @@ import AnswerHeader from "./header";
 import "./index.css";
 import QuestionBody from "./questionBody";
 import { getQuestionById } from "../../services/questionService";
+import { AuthContext } from "../../AuthContextProvider";
 
 // Component for the Answers page
 const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
     const { qid } = useParams();
     const [question, setQuestion] = useState({});
+    const {csrfToken} = useContext(AuthContext)
     useEffect(() => {
         const fetchData = async () => {
-            let res = await getQuestionById(qid);
+            let res = await getQuestionById(qid, csrfToken);
             setQuestion(res || {});
         };
         fetchData().catch((e) => console.log(e));
