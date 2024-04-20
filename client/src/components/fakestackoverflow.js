@@ -88,7 +88,7 @@ export default function fakeStackOverflow() {
               element={<NewAnswer handleAnswer={handleAnswer} />}
             />
             <Route exact path="/addQuestion" element={<NewQuestion />} />
-            <Route exact path="/login" element={<Login navigateTo={"/"} />} />
+            <Route exact path="/login" element={<Login navigateTo={"/questions"} />} />
             <Route exact path="/register" element={<SignUp />} />
             <Route
               exact

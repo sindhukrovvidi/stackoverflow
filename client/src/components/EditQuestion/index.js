@@ -5,15 +5,19 @@ import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContextProvider";
-import { useLocation, useParams } from 'react-router-dom';
-import { updateQuestion } from "../../services/questionService";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  updateQuestion,
+  deleteQuestionById,
+} from "../../services/questionService";
+import { ToastContainer, toast } from "react-toastify";
 
 const EditQuestion = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { qid } = useParams();
 
-  const {currTitle, currText,currTags} = location.state || {}
+  const { currTitle, currText, currTags } = location.state || {};
 
   const { csrfToken } = useContext(AuthContext);
 
@@ -79,12 +83,33 @@ const EditQuestion = () => {
 
     const res = await updateQuestion(qid, question, csrfToken);
     if (res && res._id) {
+      toast.success("Successfully updated the question.");
       handleQuestions();
+    } else {
+      toast.error("Unable to update the question. Login or try later!");
+    }
+  };
+
+  const deleteTheQuestion = async () => {
+    try {
+      const res = await deleteQuestionById(qid, csrfToken);
+      if (res?.data?.status === 200 || res?.response?.data?.status === 200) {
+        toast.success("Successfully delted the question!");
+        handleQuestions();
+      } else {
+        toast.error(
+          res?.response?.data?.message ||
+            "Unable to delete the question, login and try again!"
+        );
+      }
+    } catch (error) {
+      console.log("Error while deleting the question ", error);
     }
   };
 
   return (
     <Form>
+      <ToastContainer />
       <Input
         title={"Question Title"}
         hint={"Limit title to 100 characters or less"}
@@ -117,6 +142,14 @@ const EditQuestion = () => {
           }}
         >
           Update Question
+        </button>
+        <button
+          className="form_delete_postBtn"
+          onClick={() => {
+            deleteTheQuestion();
+          }}
+        >
+          Delete Question
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>

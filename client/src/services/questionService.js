@@ -43,4 +43,12 @@ const updateQuestion = async (qid, q, csrfToken) => {
     return res.data;
 };
 
-export { getQuestionsByFilter, getQuestionById, addQuestion, updateQuestion };
+const deleteQuestionById = async (qid, csrfToken) => {
+  const res = await api.delete(`${QUESTION_API_URL}/deleteQuestionById/${qid}`,  {   headers: {
+      'x-csrf-token': csrfToken,
+    },
+    withCredentials: true, });
+
+  return res;
+};
+export { getQuestionsByFilter, getQuestionById, addQuestion, updateQuestion, deleteQuestionById };

@@ -5,6 +5,7 @@ import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { AuthContext } from "../../AuthContextProvider";
 import { updateAnswer } from "../../services/answerService";
+import { ToastContainer, toast } from "react-toastify";
 
 const EditAnswer = ({ handleAnswer }) => {
   const { csrfToken } = useContext(AuthContext);
@@ -41,12 +42,16 @@ const EditAnswer = ({ handleAnswer }) => {
 
     const res = await updateAnswer(aid, answer, csrfToken);
     if (res && res._id) {
+      toast.success('Successfully updated the Answer');
       handleAnswer(qid);
+    } else {
+      toast.error('Unable to update the answer. Login or try later!')
     }
   };
 
   return (
     <Form>
+      <ToastContainer />
       <Textarea
         title={"Answer Text"}
         id={"answerTextInput"}
