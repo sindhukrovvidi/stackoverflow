@@ -6,7 +6,7 @@ import { logoutUser } from "../../services/userService";
 
 const Header = ({ search, setSearchResults }) => {
   const [val, setVal] = useState(search);
-  const { isAuthenticated, signOutAuth } = useContext(AuthContext);
+  const { loggedIn, signOutAuth, updateUser, csrfToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const Login = () => {
@@ -14,8 +14,9 @@ const Header = ({ search, setSearchResults }) => {
   };
 
   const signOut = async() => {
-    await logoutUser();
+    await logoutUser(csrfToken);
     signOutAuth();
+    updateUser("")
     navigate('/questions');
   }
 
@@ -24,7 +25,7 @@ const Header = ({ search, setSearchResults }) => {
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2560px-Stack_Overflow_logo.svg.png"
         style={{ width: "25%", height: "50%" }}
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/questions")}
       ></img>
       <input
         style={{ width: "50%" }}
@@ -42,7 +43,7 @@ const Header = ({ search, setSearchResults }) => {
           }
         }}
       />
-      {isAuthenticated ? (
+      {loggedIn ? (
         <button
           className="form_postBtn"
           onClick={() => {
