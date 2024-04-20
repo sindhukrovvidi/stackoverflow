@@ -28,7 +28,7 @@ const getCurrentUser = async () => {
 }
 
 const getCurrentUserDetails = async () => {
-    const res = await api.post(`${USER_API_URL}/getCurrentUserDetails`);
+    const res = await api.get(`${USER_API_URL}/getCurrentUserDetails`);
     return res.data;
 }
 
