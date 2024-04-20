@@ -13,4 +13,14 @@ const addAnswer = async (qid, ans, csrfToken) => {
     return res.data;
 };
 
-export { addAnswer };
+const updateAnswer = async (aid, q, csrfToken) => {
+    const res = await api.post(`${ANSWER_API_URL}/updateAnswer/${aid}`, q, {   headers: {
+        'x-csrf-token': csrfToken,
+      },
+      withCredentials: true, });
+
+    return res.data;
+};
+
+
+export { addAnswer, updateAnswer };

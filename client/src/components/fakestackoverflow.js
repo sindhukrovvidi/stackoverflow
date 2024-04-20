@@ -12,6 +12,7 @@ import TagPage from "./TagPage/index.js";
 import UserProfile from "./UserProfile/index.js";
 import EditUserProfile from "./UserProfile/editprofileindex.js";
 import EditQuestion from "./EditQuestion/index.js";
+import EditAnswer from "./EditAnswer/index.js";
 
 export default function fakeStackOverflow() {
   const [selectedTab, setSelectedTab] = useState("q");
@@ -73,8 +74,13 @@ export default function fakeStackOverflow() {
           <Routes>
           <Route
               exact
-              path="/question/:qid"
+              path="/updateQuestion/:qid"
               element={<EditQuestion />}
+            />
+            <Route
+              exact
+              path="/updateAnswer/:aid"
+              element={<EditAnswer handleAnswer={handleAnswer}/>}
             />
             <Route
               exact

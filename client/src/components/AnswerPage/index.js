@@ -28,11 +28,18 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
         const {title, text, tags} = question;
         const tag = await getTagsWithIds(tags, csrfToken);
         const tagNames = tag.map(currTag => currTag.name);
-        navigate(`/question/${qid}`, {
+        navigate(`/updateQuestion/${qid}`, {
              state: { currTitle: title, currText: text, currTags: tagNames.join(" ") } 
           });
-        
     }
+
+    const updateAnswer = async(a) => {
+        const { text} = a;
+        navigate(`/updateAnswer/${a._id}`, {
+             state: { currText: text, qid: qid } 
+          });
+    }
+
     return (
         <>
             <AnswerHeader
@@ -59,6 +66,7 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
                         text={a.text}
                         ansBy={a.ans_by}
                         meta={getMetaData(new Date(a.ans_date_time))}
+                        updateAnswer={() => updateAnswer(a)}
                     />
                 ))}
             <button

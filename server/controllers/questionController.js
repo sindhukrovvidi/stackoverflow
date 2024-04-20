@@ -65,7 +65,7 @@ const updateQuestion = async (req, res) => {
 
     const updateObject = {};
     if (title) updateObject.title = title;
-    if (title) updateObject.modifiedOn = modifiedOn;
+    if (modifiedOn) updateObject.modifiedOn = modifiedOn;
     if (text) updateObject.text = text;
     if (tags) updateObject.tags = addedTags;
 
