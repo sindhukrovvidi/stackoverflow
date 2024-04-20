@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContextProvider";
 import { logoutUser } from "../../services/userService";
+import { getCurrentUserDetails } from "../../services/userService";
 
 const Header = ({ search, setSearchResults }) => {
   const [val, setVal] = useState(search);
@@ -21,7 +22,8 @@ const Header = ({ search, setSearchResults }) => {
     navigate('/questions');
   }
 
-  const goToProfile = () => {
+  const goToProfile = async() => {
+    await getCurrentUserDetails(csrfToken);
     navigate('/profile'); // assuming the profile page route is '/profile'
   };
 
