@@ -32,11 +32,10 @@ const addAnswer = async (req, res) => {
 const updateAnswer = async (req, res) => {
   try {
     const answerId = new mongoose.Types.ObjectId(req.params.aid);
-
     const { text, modifiedOn } = req.body;
 
     const updateObject = {};
-    if (modifiedOn) updateObject.modifiedOn = modifiedOn;
+    if (modifiedOn) updateObject.modifiedOn = new Date(modifiedOn);
     if (text) updateObject.text = text;
 
     if (Object.keys(updateObject).length > 0) {
@@ -62,20 +61,22 @@ const updateAnswer = async (req, res) => {
 
 const deleteAnswerById = async (req, res) => {
   try {
-    const answerId = req.params.aid;
+    const answerId = new mongoose.Types.ObjectId(req.params.aid);
 
     const question = await Answer.findById(answerId);
     if (!question) {
-      return res.status(404).json({status:404, message: "Answer not found" });
+      return res.status(404).json({ status: 404, message: "Answer not found" });
     }
 
     await Answer.findByIdAndDelete(answerId);
-    res.status(200).json({ status: 200, message: "Answer deleted successfully" });
+    res
+      .status(200)
+      .json({ status: 200, message: "Answer deleted successfully" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
 
 router.post("/addAnswer", addAnswer);
 router.post("/updateAnswer/:aid", updateAnswer);
