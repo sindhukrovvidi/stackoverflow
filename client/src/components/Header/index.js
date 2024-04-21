@@ -1,57 +1,85 @@
 import "./index.css";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthContextProvider";
-import { logoutUser } from "../../services/userService";
-import { getCurrentUserDetails } from "../../services/userService";
+import { checkLoginStatus, logoutUser, getCurrentUserDetails } from "../../services/userService";
 
-const Header = ({ search, setSearchResults }) => {
+const Header = ({ search, setSearchResults, updateLoginStatus,  isLoggedIn}) => {
   const [val, setVal] = useState(search);
-  const { loggedIn, signOutAuth, updateUser, csrfToken } = useContext(AuthContext);
+  const { updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const Login = () => {
+  const fetchData = async () => {
+    try {
+      const response = await checkLoginStatus();
+      updateLoginStatus(response.loggedIn);
+    } catch (error) {
+      console.error("Error checking login status:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const signOut = async () => {
+    try {
+      await logoutUser();
+      updateLoginStatus(false);
+      updateUser("");
+      navigate('/questions');
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
+  const goToProfile = async () => {
+    try {
+      await getCurrentUserDetails();
+      navigate('/profile');
+    } catch (error) {
+      console.error("Error fetching current user details:", error);
+    }
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setSearchResults(val, "Search Results");
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setVal(e.target.value);
+  };
+
+  const handleLogoClick = () => {
+    navigate("/questions");
+  };
+
+
+  const handleLoginClick = () => {
     navigate('/login');
   };
-
-
-  const signOut = async() => {
-    await logoutUser(csrfToken);
-    signOutAuth(false);
-    updateUser("")
-    navigate('/questions');
-  }
-
-  const goToProfile = async() => {
-    await getCurrentUserDetails(csrfToken);
-    navigate('/profile'); 
-  };
-
 
   return (
     <div id="header" className="header">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/2560px-Stack_Overflow_logo.svg.png"
         style={{ width: "25%", height: "50%" }}
-        onClick={() => navigate("/questions")}
-      ></img>
+        onClick={handleLogoClick}
+        alt="Stack Overflow Logo"
+      />
       <input
         style={{ width: "50%" }}
         id="searchBar"
         placeholder="Search ..."
         type="text"
         value={val}
-        onChange={(e) => {
-          setVal(e.target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            setSearchResults(e.target.value, "Search Results");
-          }
-        }}
+        onChange={handleInputChange}
+        onKeyDown={handleSearchKeyDown}
       />
-      {loggedIn ? (
+      {isLoggedIn ? (
         <>
           <button
             className="form_postBtn"
@@ -61,15 +89,13 @@ const Header = ({ search, setSearchResults }) => {
           </button>
           <button
             className="form_postBtn"
-            onClick={() => {
-              signOut();
-            }}
+            onClick={signOut}
           >
             Sign Out
           </button>
         </>
       ) : (
-        <button className="form_postBtn" onClick={Login}>
+        <button className="form_postBtn" onClick={handleLoginClick}>
           Login
         </button>
       )}

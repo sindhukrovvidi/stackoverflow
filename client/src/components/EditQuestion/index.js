@@ -1,10 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../AuthContextProvider";
 import { useLocation, useParams } from "react-router-dom";
 import {
   updateQuestion,
@@ -18,8 +17,6 @@ const EditQuestion = () => {
   const { qid } = useParams();
 
   const { currTitle, currText, currTags } = location.state || {};
-
-  const { csrfToken } = useContext(AuthContext);
 
   const [title, setTitle] = useState(currTitle);
   const [text, setText] = useState(currText);
@@ -81,7 +78,7 @@ const EditQuestion = () => {
       modifiedOn: new Date(),
     };
 
-    const res = await updateQuestion(qid, question, csrfToken);
+    const res = await updateQuestion(qid, question);
     if (res && res._id) {
       toast.success("Successfully updated the question.");
       handleQuestions();
@@ -92,7 +89,7 @@ const EditQuestion = () => {
 
   const deleteTheQuestion = async () => {
     try {
-      const res = await deleteQuestionById(qid, csrfToken);
+      const res = await deleteQuestionById(qid);
       if (res?.data?.status === 200 || res?.response?.data?.status === 200) {
         toast.success("Successfully delted the question!");
         handleQuestions();

@@ -1,15 +1,13 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 import Tag from "./tag";
 import { getTagsWithQuestionNumber } from "../../services/tagService";
-import { AuthContext } from "../../AuthContextProvider";
 
 const TagPage = ({ clickTag, handleNewQuestion }) => {
   const [tlist, setTlist] = useState([]);
-  const { csrfToken } = useContext(AuthContext);
   useEffect(() => {
     const fetchData = async () => {
-      let res = await getTagsWithQuestionNumber(csrfToken);
+      let res = await getTagsWithQuestionNumber();
       setTlist(res || []);
     };
 

@@ -1,9 +1,8 @@
 import "./index.css";
 import QuestionHeader from "./header";
 import Question from "./question";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { getQuestionsByFilter } from "../../services/questionService";
-import { AuthContext } from "../../AuthContextProvider";
 
 const QuestionPage = ({
   title_text = "All Questions",
@@ -14,11 +13,10 @@ const QuestionPage = ({
 }) => {
   const [qlist, setQlist] = useState([]);
   const [questionOrder, setQuestionOrder] = useState("newest");
-  const { csrfToken } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      let res = await getQuestionsByFilter(questionOrder, search, csrfToken);
+      let res = await getQuestionsByFilter(questionOrder, search);
       setQlist(res || []);
     };
 

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUserDetails } from '../../services/userService';
-import { AuthContext } from "../../AuthContextProvider";
 const UserProfile = () => {
     const navigate = useNavigate();
-    const { csrfToken } = useContext(AuthContext);
     const [user, setUser] = useState({
         username: '',
         joinedOn: '',
@@ -18,7 +16,7 @@ const UserProfile = () => {
     useEffect(() => {
         const fetchData = async () => {
             
-            const userDetails = await getCurrentUserDetails(csrfToken);
+            const userDetails = await getCurrentUserDetails();
             if (userDetails.success) {
                 const { username, createdOn, email, contact_no, about, institution } = userDetails.user;
                 setUser({

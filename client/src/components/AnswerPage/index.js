@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { getMetaData } from "../../tool";
 import Answer from "./answer";
@@ -6,7 +6,6 @@ import AnswerHeader from "./header";
 import "./index.css";
 import QuestionBody from "./questionBody";
 import { getQuestionById } from "../../services/questionService";
-import { AuthContext } from "../../AuthContextProvider";
 import { useNavigate } from "react-router-dom";
 import { getTagsWithIds } from "../../services/tagService";
 
@@ -14,11 +13,10 @@ import { getTagsWithIds } from "../../services/tagService";
 const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
     const { qid } = useParams();
     const [question, setQuestion] = useState({});
-    const {csrfToken} = useContext(AuthContext)
     const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async () => {
-            let res = await getQuestionById(qid, csrfToken);
+            let res = await getQuestionById(qid);
             setQuestion(res || {});
         };
         fetchData().catch((e) => console.log(e));
@@ -26,7 +24,7 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
 
     const updateQuestion = async() => {
         const {title, text, tags} = question;
-        const tag = await getTagsWithIds(tags, csrfToken);
+        const tag = await getTagsWithIds(tags);
         const tagNames = tag.map(currTag => currTag.name);
         navigate(`/updateQuestion/${qid}`, {
              state: { currTitle: title, currText: text, currTags: tagNames.join(" ") } 

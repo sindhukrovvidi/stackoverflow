@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import { registerUser } from "../../services/userService";
-import { AuthContext } from "../../AuthContextProvider";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,7 +11,6 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [contact_no, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const {csrfToken} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -22,8 +20,7 @@ const SignUp = () => {
         email,
         username,
         password,
-        contact_no,
-        csrfToken
+        contact_no
       );
       if(response.status === 200) {
         navigate("/login")

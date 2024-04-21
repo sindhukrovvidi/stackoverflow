@@ -5,23 +5,23 @@ import Form from "../baseComponents/form";
 import Input from "../baseComponents/input";
 import { loginUser } from "../../services/userService";
 import { AuthContext } from "../../AuthContextProvider";
-import { getCsrfToken, checkLoginStatus } from "../../services/userService";
+import { checkLoginStatus } from "../../services/userService";
 import { ToastContainer, toast } from "react-toastify";
+import { getCsrfToken } from "../../services/config";
 
-const Login = ({ navigateTo }) => {
+const Login = ({ navigateTo, updateLoginStatus }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
-  const { signIn, updateCsrfToken, signOutAuth, updateUser } =
-    useContext(AuthContext);
+  const { updateUser } = useContext(AuthContext);
+  const [csrfToken, setCsrfToken] = useState("");
 
   const navigate = useNavigate();
 
   const fetchCsrfToken = useCallback(async () => {
     try {
       const response = await getCsrfToken();
-      setToken(response.data.csrfToken);
-      updateCsrfToken(response.data.csrfToken);
+      console.log(response);
+      setCsrfToken(response);
     } catch (error) {
       console.error("Error fetching CSRF token:", error);
     }
@@ -30,13 +30,16 @@ const Login = ({ navigateTo }) => {
   const checkStatus = useCallback(async () => {
     try {
       const response = await checkLoginStatus();
-      const resLoggedIn = response.data.loggedIn;
-      signOutAuth(resLoggedIn);
+      const resLoggedIn = response.loggedIn;
+      if (updateLoginStatus) {
+        updateLoginStatus(resLoggedIn);
+      }
+
       if (resLoggedIn) updateUser(response.data.user.username);
     } catch (error) {
       console.error("Error checking login status:", error);
     }
-  }, [token]);
+  }, [csrfToken]);
 
   useEffect(() => {
     const fetchCsrfAndCheckLoginStatus = async () => {
@@ -45,17 +48,19 @@ const Login = ({ navigateTo }) => {
     };
 
     // Call the function only when the component mounts
-    if (!token) {
+    if (!csrfToken) {
       fetchCsrfAndCheckLoginStatus();
     }
-  }, [token, fetchCsrfToken, checkLoginStatus]);
+  }, [csrfToken, fetchCsrfToken, checkStatus]);
 
   const handleSubmit = async () => {
     try {
-      const response = await loginUser(email, password, token);
+      const response = await loginUser(email, password);
       if (response.data.success) toast.success("Successfully logged in!");
+      if (updateLoginStatus) {
+        updateLoginStatus(true);
+      }
       updateUser(response.data.user.username);
-      signIn();
       navigate(navigateTo || "/questions");
     } catch (error) {
       toast.error("Unable to login, please try again or check credentials.");
@@ -81,7 +86,11 @@ const Login = ({ navigateTo }) => {
         />
         <div className="login-footer">
           <div className="btn_indicator_container_login">
-            <button className="form_postBtn" id="loginPageButton" onClick={handleSubmit}>
+            <button
+              className="form_postBtn"
+              id="loginPageButton"
+              onClick={handleSubmit}
+            >
               Login
             </button>
           </div>

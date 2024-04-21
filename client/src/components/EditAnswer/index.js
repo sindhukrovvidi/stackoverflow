@@ -1,15 +1,13 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import Form from "../baseComponents/form";
 import Textarea from "../baseComponents/textarea";
 import { validateHyperlink } from "../../tool";
-import { AuthContext } from "../../AuthContextProvider";
 import { updateAnswer } from "../../services/answerService";
 import { ToastContainer, toast } from "react-toastify";
 import { deleteAnswerById } from "../../services/answerService";
 
 const EditAnswer = ({ handleAnswer }) => {
-  const { csrfToken } = useContext(AuthContext);
   const location = useLocation();
   const { aid } = useParams();
 
@@ -41,7 +39,7 @@ const EditAnswer = ({ handleAnswer }) => {
       modifiedOn: new Date(),
     };
 
-    const res = await updateAnswer(aid, answer, csrfToken);
+    const res = await updateAnswer(aid, answer);
     if (res && res._id) {
       toast.success('Successfully updated the Answer');
       handleAnswer(qid);
@@ -52,7 +50,7 @@ const EditAnswer = ({ handleAnswer }) => {
 
   const deleteTheAnswer = async () => {
     try {
-      const res = await deleteAnswerById(aid, csrfToken);
+      const res = await deleteAnswerById(aid);
       if (res?.data?.status === 200 || res?.response?.data?.status === 200) {
         toast.success("Successfully deleted the answer!");
         handleAnswer(qid);

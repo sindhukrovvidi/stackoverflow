@@ -18,8 +18,12 @@ export default function fakeStackOverflow() {
   const [selectedTab, setSelectedTab] = useState("q");
   const [title, setQuestionPageTitle] = useState("All Questions");
   const [search, setSearch] = useState("");
+  const [isLoggedIn, setLoginStatus]=useState(false);
   const navigate = useNavigate();
 
+  const updateLoginStatus = (val) => {
+    setLoginStatus(val)
+  }
   const handleQuestions = () => {
     setSearch("");
     setSelectedTab("q");
@@ -62,7 +66,7 @@ export default function fakeStackOverflow() {
 
   return (
     <div id="main-content" style={{ height: "100vh" }}>
-      <Header setSearchResults={setSearchResults}></Header>
+      <Header setSearchResults={setSearchResults} updateLoginStatus={updateLoginStatus} isLoggedIn={isLoggedIn}></Header>
       <div id="main" className="main">
         <SideBarNav
           selected={selectedTab}
@@ -88,7 +92,7 @@ export default function fakeStackOverflow() {
               element={<NewAnswer handleAnswer={handleAnswer} />}
             />
             <Route exact path="/addQuestion" element={<NewQuestion />} />
-            <Route exact path="/login" element={<Login navigateTo={"/questions"} />} />
+            <Route exact path="/login" element={<Login navigateTo={"/questions"} updateLoginStatus={updateLoginStatus}/>} />
             <Route exact path="/register" element={<SignUp />} />
             <Route
               exact
