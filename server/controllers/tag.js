@@ -32,7 +32,6 @@ const getTagsWithIds = async (req, res) => {
     tagIds = tagIds.map((tag) => {
       return new mongoose.Types.ObjectId(tag);
     })
-    console.log("tagId ", tagIds)
     const tags = await Tag.find({
       _id: { $in: tagIds },
     }, { name: 1 });

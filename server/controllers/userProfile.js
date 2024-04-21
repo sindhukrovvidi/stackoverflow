@@ -42,9 +42,7 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   if (req.session) {
-    console.log("This is the session before logout ", req.session)
     req.session.destroy();
-    console.log("This is the session after logout ", req.session)
     res.json({ success: true });
   } else {
     res.json({ success: false });

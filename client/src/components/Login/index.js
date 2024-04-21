@@ -20,7 +20,6 @@ const Login = ({ navigateTo, updateLoginStatus }) => {
   const fetchCsrfToken = useCallback(async () => {
     try {
       const response = await getCsrfToken();
-      console.log(response);
       setCsrfToken(response);
     } catch (error) {
       console.error("Error fetching CSRF token:", error);

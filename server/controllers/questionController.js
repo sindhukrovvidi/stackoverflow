@@ -57,15 +57,15 @@ const updateQuestion = async (req, res) => {
 
     const { title, text, tags, modifiedOn } = req.body;
 
-    const addTagPromises = tags.map(async (tag) => {
+    const addTagPromises = tags?.map(async (tag) => {
       return await addTag(tag);
-    });
+    }) || [];
 
     let addedTags = await Promise.all(addTagPromises);
 
     const updateObject = {};
     if (title) updateObject.title = title;
-    if (modifiedOn) updateObject.modifiedOn = modifiedOn;
+    if (modifiedOn) updateObject.modifiedOn = new Date(modifiedOn);
     if (text) updateObject.text = text;
     if (tags) updateObject.tags = addedTags;
 
@@ -102,6 +102,10 @@ const getQuestionById = async (req, res) => {
       populate: { path: "ans_by", select: "username" }
     })
     .populate({ path: "asked_by", select: "username" }).lean();
+    
+    if (!updatedQuestion) {
+      return res.status(404).json({ error: "Question not found" });
+    }
 
     if (updatedQuestion.asked_by) {
       const username = updatedQuestion.asked_by.username;
@@ -114,10 +118,7 @@ const getQuestionById = async (req, res) => {
         answer.ans_by = answerBy;
       }
     });
-
-    if (!updatedQuestion) {
-      return res.status(404).json({ error: "Question not found" });
-    }
+    
     res.status(200).send(updatedQuestion);
   } catch (err) {
     console.log("Error while fetching a question", err);
@@ -127,7 +128,7 @@ const getQuestionById = async (req, res) => {
 
 const deleteQuestionById = async (req, res) => {
   try {
-    const questionId = req.params.qid;
+    const questionId = new mongoose.Types.ObjectId(req.params.qid);
 
     // Check if the question exists
     const question = await Question.findById(questionId);
@@ -136,7 +137,7 @@ const deleteQuestionById = async (req, res) => {
     }
 
     // Check if the answers array is empty
-    if (question.answers.length > 0) {
+    if (question?.answers?.length > 0) {
       return res.status(400).json({ status: 400, message: "Question cannot be deleted because it has answers" });
     }
 
