@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { getMetaData } from "../../tool";
 import Answer from "./answer";
@@ -8,16 +8,26 @@ import QuestionBody from "./questionBody";
 import { getQuestionById } from "../../services/questionService";
 import { useNavigate } from "react-router-dom";
 import { getTagsWithIds } from "../../services/tagService";
+import { updateVote } from "../../services/voteService";
+import { AuthContext } from "../../AuthContextProvider";
+import { toast } from "react-toastify";
 
 // Component for the Answers page
 const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
     const { qid } = useParams();
     const [question, setQuestion] = useState({});
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+    const [voteCount, setVoteCount] = useState(0);
+
     useEffect(() => {
         const fetchData = async () => {
             let res = await getQuestionById(qid);
             setQuestion(res || {});
+            if(res) {
+                const sum = res?.votes.reduce((acc, obj) => acc + obj.value, 0);
+                setVoteCount(sum)
+            }
         };
         fetchData().catch((e) => console.log(e));
     }, [qid]);
@@ -29,6 +39,18 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
         navigate(`/updateQuestion/${qid}`, {
              state: { currTitle: title, currText: text, currTags: tagNames.join(" ") } 
           });
+    }
+
+    const updateVoteValue = async(voteValue) => {
+        const response = await updateVote(qid, voteValue, user?._id);
+        if (response?.status === 200) {
+          const { votes } = response;
+          const sum = votes?.reduce((acc, obj) => acc + obj.value, 0);
+          setVoteCount(sum)
+          toast.success("Updated the vote!")
+        } else if (response?.status === 400) {
+            toast.warning("Your vote has already been updated!");
+        }
     }
 
     const updateAnswer = async(a) => {
@@ -55,6 +77,8 @@ const AnswerPage = ({ handleNewQuestion, handleNewAnswer }) => {
                 meta={question && getMetaData(new Date(question.ask_date_time))}
                 updateQuestion={updateQuestion}
                 modifiedOn={question && question.modifiedOn ? getMetaData(new Date(question.modifiedOn)) : ''}
+                updateVoteValue={updateVoteValue}
+                voteCount={voteCount}
             />
             {question &&
                 question.answers &&

@@ -34,7 +34,7 @@ const Login = ({ navigateTo, updateLoginStatus }) => {
         updateLoginStatus(resLoggedIn);
       }
 
-      if (resLoggedIn) updateUser(response.data.user.username);
+      if (resLoggedIn) updateUser(response.data.user);
     } catch (error) {
       console.error("Error checking login status:", error);
     }
@@ -59,7 +59,7 @@ const Login = ({ navigateTo, updateLoginStatus }) => {
       if (updateLoginStatus) {
         updateLoginStatus(true);
       }
-      updateUser(response.data.user.username);
+      updateUser(response.data.user);
       navigate(navigateTo || "/questions");
     } catch (error) {
       toast.error("Unable to login, please try again or check credentials.");
