@@ -22,7 +22,6 @@ app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(csurf());
 
 app.get('/csrf-token', (req, res) => {
-    console.log("This is the server code ", req.csrfToken())
   res.json({ csrfToken: req.csrfToken() });
 });
 

@@ -12,7 +12,7 @@ const QuestionBody = ({  views, text, askby, meta, updateQuestion, modifiedOn })
       <div className="bold_title answer_question_view">{views} views</div>
       <div className="answer_question_text">{handleHyperlink(text)}</div>
       <div className="answer_question_right">
-        <div className="question_author">{askby}</div>
+        <div className="question_author">{askby || "Unknown User"}</div>
         <div className="answer_question_meta">asked {meta}</div>
         {user === askby ? <button onClick={() => updateQuestion()}> Edit Question </button> : <></>}
         {modifiedOn ?  <div className="answer_question_meta">modified {modifiedOn}</div> : <></>}

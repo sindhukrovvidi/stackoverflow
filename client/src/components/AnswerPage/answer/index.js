@@ -12,7 +12,7 @@ const Answer = ({ text, ansBy, meta, updateAnswer }) => {
                 {handleHyperlink(text)}
             </div>
             <div className="answerAuthor">
-                <div className="answer_author">{ansBy}</div>
+                <div className="answer_author">{ansBy || "Unknown User"}</div>
                 <div className="answer_question_meta">{meta}</div>
                 {user === ansBy ? <button onClick={() => updateAnswer()}> Edit Answer </button> : <></>}
             </div>

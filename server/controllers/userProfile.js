@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const UserProfile = require("../models/userProfile");
+const mongoose = require('mongoose');
 const csrf = require('csurf')({ ignoreMethods: ['POST'] }); 
 
 const register = async (req, res) => {
@@ -72,6 +73,31 @@ const getCurrentUserDetails = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+      const {password, about, institution, contact_no, modifiedOn, userId} = req.body;
+      const updatedObject = {};
+      if(password) updatedObject.password = password;
+      if(about) updatedObject.about = about;
+      if(institution) updatedObject.institution = institution;
+      if(contact_no) updatedObject.contact_no = contact_no;
+      if(modifiedOn) updatedObject.modifiedOn = new Date(modifiedOn);
+  
+      const updatedUser = await UserProfile.findOneAndUpdate(
+        { _id: new mongoose.Types.ObjectId(userId)},
+        updatedObject,
+        { new: true }
+      )
+      if (!updatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      res.status(200).send(updatedUser);
+  } catch (err) {
+    console.error("Error while updating user: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 router.use(csrf);
 
 router.post("/register", register);
@@ -79,4 +105,5 @@ router.post("/login", login);
 router.post("/logout", logout);
 router.get("/getCurrentUser", getCurrentUser);
 router.get("/getCurrentUserDetails", getCurrentUserDetails);
+router.post("/updateUser", updateUser);
 module.exports = router;

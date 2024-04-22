@@ -47,6 +47,17 @@ const getCurrentUserDetails = async () => {
   return res.data;
 };
 
+const updateUser = async ({ contact_no, about, institution, password, userId }) => {
+  const res = await api.post(`${USER_API_URL}/updateUser`, {
+    contact_no,
+    about,
+    institution,
+    password,
+    userId
+  });
+  return res.data;
+};
+
 export {
   loginUser,
   registerUser,
@@ -55,4 +66,5 @@ export {
   getCurrentUserDetails,
   getCsrfToken,
   checkLoginStatus,
+  updateUser,
 };

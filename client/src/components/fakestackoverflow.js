@@ -9,8 +9,8 @@ import QuestionPage from "./QuestionPage/index.js";
 import NewQuestion from "./NewQuestion/index.js";
 import AnswerPage from "./AnswerPage";
 import TagPage from "./TagPage/index.js";
-import UserProfile from "./UserProfile/index.js";
-import EditUserProfile from "./UserProfile/editprofileindex.js";
+import Profile from "./Profile/index.js";
+import ProfileEdit from "./EditProfile/index.js";
 import EditQuestion from "./EditQuestion/index.js";
 import EditAnswer from "./EditAnswer/index.js";
 
@@ -127,8 +127,8 @@ export default function fakeStackOverflow() {
                 />
               }
             />
-            <Route exact path="/profile" element={<UserProfile />} />
-            <Route exact path="/editprofile" element={<EditUserProfile />} />
+            <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/editprofile" element={<ProfileEdit />} />
             
           </Routes>
         </div>
