@@ -1,6 +1,6 @@
 import "./index.css";
 
-const SideBarNav = ({ selected = "", handleQuestions, handleTags, handleFavourites }) => {
+const SideBarNav = ({ selected = "", handleQuestions, handleTags }) => {
     return (
         <div id="sideBarNav" className="sideBarNav">
             <div
@@ -24,17 +24,6 @@ const SideBarNav = ({ selected = "", handleQuestions, handleTags, handleFavourit
                 }}
             >
                 Tags
-            </div>
-            <div
-                id="menu_tag"
-                className={`menu_button ${
-                    selected === "f" ? "menu_selected" : ""
-                }`}
-                onClick={() => {
-                    handleFavourites();
-                }}
-            >
-                Favourites
             </div>
         </div>
     );
