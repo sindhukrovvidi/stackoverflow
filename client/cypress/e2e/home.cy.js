@@ -1,4 +1,4 @@
-describe("Cypress Tests repeated from React assignment", () => {
+describe("E2E Cypress tests for stackoverflow", () => {
     beforeEach(() => {
       cy.exec("node ../server/init.js mongodb://127.0.0.1:27017/fake_so");
     
