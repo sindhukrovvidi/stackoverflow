@@ -11,6 +11,7 @@ services:
     volumes:
       - logs:/app/logs
       - ./server:/usr/src/app
+      - ./server/models:/usr/src/app/server/models
     depends_on:
       - mongodb
   client:

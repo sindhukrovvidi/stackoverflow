@@ -9,10 +9,10 @@ if (!userArgs[0].startsWith('mongodb')) {
     return
 }
 
-let Tag = require('../server/models/tags')
-let Answer = require('../server/models/answers')
-let Question = require('../server/models/questions')
-let User = require('../server/models/userProfile')
+let Tag = require('./models/tags')
+let Answer = require('./models/answers')
+let Question = require('./models/questions')
+let User = require('./models/userProfile')
 
 
 let mongoose = require('mongoose');
@@ -40,7 +40,7 @@ function tagCreate(name) {
 
 function answerCreate(text, ans_by, ans_date_time) {
   let answerdetail = {text:text};
-  if (ans_by != false) answerdetail.ans_by = ans_by;
+  answerdetail.ans_by = u1?._id;
   if (ans_date_time != false) answerdetail.ans_date_time = ans_date_time;
 
   let answer = new Answer(answerdetail);
@@ -52,7 +52,7 @@ function questionCreate(title, text, tags, answers, asked_by, ask_date_time, vie
     title: title,
     text: text,
     tags: tags,
-    asked_by: asked_by
+    asked_by: u1?._id
   }
   if (answers != false) qstndetail.answers = answers;
   if (ask_date_time != false) qstndetail.ask_date_time = ask_date_time;
@@ -61,9 +61,9 @@ function questionCreate(title, text, tags, answers, asked_by, ask_date_time, vie
   let qstn = new Question(qstndetail);
   return qstn.save();
 }
-
+let u1 = {}; 
 const populate = async () => {
-  let u1 = await createUser('sindhuk@gmail.com', 'password', 1234567, 'sindhu')  
+  u1 = await createUser('sindhuk@gmail.com', 'password', 1234567, 'sindhu')  
   let t1 = await tagCreate('react');
   let t2 = await tagCreate('javascript');
   let t3 = await tagCreate('android-studio');
