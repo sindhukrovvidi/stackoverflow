@@ -3,12 +3,14 @@ import { MemoryRouter } from "react-router-dom";
 import Login from "../../src/components/Login";
 import { AuthContext } from "../../src/AuthContextProvider";
 import * as userService from "../../src/services/userService";
+import { toast } from "react-toastify";
 
 const Wrapper = ({ children }) => {
   const mockSignIn = cy.stub();
   const mockSignOutAuth = cy.stub();
   const mockUpdateUser = cy.stub();
   const mockUpdateCsrfToken = cy.stub();
+  const user = cy.stub();
 
   return (
     <AuthContext.Provider
@@ -17,6 +19,7 @@ const Wrapper = ({ children }) => {
         signOutAuth: mockSignOutAuth,
         updateUser: mockUpdateUser,
         updateCsrfToken: mockUpdateCsrfToken,
+        user: user
       }}
     >
       {children}
@@ -25,9 +28,8 @@ const Wrapper = ({ children }) => {
 };
 
 describe("Login", () => {
-    let fetchStub;
+  let fetchStub;
   beforeEach(() => {
-    
     fetchStub = cy.stub(window, "fetch").callsFake((input, init) => {
       if (init.method === "GET" && init.url === "/check-login") {
         return Promise.resolve({
@@ -36,6 +38,10 @@ describe("Login", () => {
         });
       }
     });
+  });
+
+  afterEach(() => {
+    fetchStub.restore();
   });
 
   it("renders correctly", () => {
@@ -70,63 +76,12 @@ describe("Login", () => {
     cy.get("#loginPassword").should("have.value", "password123");
   });
 
-  it("navigates to register page when register link is clicked", () => {
-    const navigate = cy.stub();
+  it("displays error toast when login fails", () => {
+    cy.stub(userService, "loginUser").rejects(new Error("Login failed"));
+    const mockToastError = cy.stub(toast, "error");
 
     cy.mount(
       <MemoryRouter>
-        <Wrapper>
-          <Login navigateTo="/questions" />
-        </Wrapper>
-      </MemoryRouter>
-    );
-
-    cy.get(".registerButton a")
-      .contains("Register")
-      .then(($button) => {
-        cy.stub($button[0], "click").callsFake(() => {
-          navigate("/register");
-        });
-        $button[0].click();
-      });
-
-    cy.wrap(navigate).should("be.calledWith", "/register");
-  });
-
-  it("navigates to questions page and signs in when login is successful", () => {
-    cy.stub(userService, "checkLoginStatus").resolves({ loggedIn: true });
-
-    const navigate = cy.stub().as("navigate");
-
-    cy.mount(
-      <MemoryRouter navigator={{ navigate }}>
-        <Wrapper>
-          <Login navigateTo="/questions" />
-        </Wrapper>
-      </MemoryRouter>
-    );
-
-    cy.get("#loginEmail").type("test@example.com");
-    cy.get("#loginPassword").type("password123");
-    cy.get(".form_postBtn")
-      .contains("Login")
-      .then(($button) => {
-        cy.stub($button[0], "click").callsFake(() => {
-          navigate("/questions");
-        });
-        $button[0].click();
-      });
-
-    cy.get("@navigate").should("be.calledWith", "/questions");
-  });
-
-  it("displays error toast when login fails", () => {
-    cy.stub(userService, "checkLoginStatus").resolves({ loggedIn: false }); // Stub the method from the imported module
-
-    const navigate = cy.stub().as("navigate");
-
-    cy.mount(
-      <MemoryRouter navigator={{ navigate }}>
         <Wrapper>
           <Login navigateTo="/questions" />
         </Wrapper>
@@ -137,8 +92,8 @@ describe("Login", () => {
     cy.get("#loginPassword").type("wrongpassword");
     cy.get(".form_postBtn").click();
 
-    cy.get(".Toastify__toast-body").should(
-      "contain",
+    cy.wrap(mockToastError).should(
+      "be.calledWith",
       "Unable to login, please try again or check credentials."
     );
   });

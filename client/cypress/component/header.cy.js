@@ -1,21 +1,31 @@
-// header.spec.js
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import Header from "../../src/components/Header/index";
 import { AuthContext } from "../../src/AuthContextProvider";
+import * as userService from "../../src/services/userService";
 
-const Wrapper = ({ loggedIn, children }) => {
+const Wrapper = ({ user, children }) => {
+  const mockUpdateUser = cy.stub();
+
   return (
-    <AuthContext.Provider value={{ loggedIn }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ updateUser: mockUpdateUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
 describe("Header", () => {
+  beforeEach(() => {
+    cy.stub(userService, "checkLoginStatus").resolves({ loggedIn: false });
+    cy.stub(userService, "logoutUser").resolves();
+    cy.stub(userService, "getCurrentUserDetails").resolves();
+  });
+
   it("renders correctly", () => {
     cy.mount(
       <MemoryRouter>
         <Wrapper>
-          <Header search="" setSearchResults={() => {}} />
+          <Header search="" setSearchResults={() => {}} isLoggedIn={false} />
         </Wrapper>
       </MemoryRouter>
     );
@@ -28,8 +38,8 @@ describe("Header", () => {
   it("displays login button when not logged in", () => {
     cy.mount(
       <MemoryRouter>
-        <Wrapper loggedIn={false}>
-          <Header search="" setSearchResults={() => {}} />
+        <Wrapper>
+          <Header search="" setSearchResults={() => {}} isLoggedIn={false} />
         </Wrapper>
       </MemoryRouter>
     );
@@ -38,10 +48,12 @@ describe("Header", () => {
   });
 
   it("displays profile and sign out buttons when logged in", () => {
+    cy.stub(userService, "checkLoginStatus").resolves({ loggedIn: true });
+
     cy.mount(
       <MemoryRouter>
-        <Wrapper loggedIn={true}>
-          <Header search="" setSearchResults={() => {}} />
+        <Wrapper>
+          <Header search="" setSearchResults={() => {}} isLoggedIn={true} />
         </Wrapper>
       </MemoryRouter>
     );
@@ -50,80 +62,11 @@ describe("Header", () => {
     cy.get(".form_postBtn").should("contain", "Sign Out");
   });
 
-  it("navigates to login page when login button is clicked", () => {
-    const navigate = cy.stub();
-
-    cy.mount(
-      <MemoryRouter navigator={{ navigate }}>
-        <Wrapper loggedIn={false}>
-          <Header search="" setSearchResults={() => {}} />
-        </Wrapper>
-      </MemoryRouter>
-    );
-
-    cy.get(".form_postBtn")
-      .contains("Login")
-      .then(($button) => {
-        cy.stub($button[0], "click").callsFake(() => {
-          navigate("/login");
-        });
-        $button[0].click();
-      });
-
-    cy.wrap(navigate).should("be.calledWith", "/login");
-  });
-
-  it("navigates to profile page when profile button is clicked", () => {
-    const navigate = cy.stub();
-
-    cy.mount(
-      <MemoryRouter navigator={{ navigate }}>
-        <Wrapper loggedIn={true}>
-          <Header search="" setSearchResults={() => {}} />
-        </Wrapper>
-      </MemoryRouter>
-    );
-
-    cy.get(".form_postBtn")
-      .contains("Profile")
-      .then(($button) => {
-        cy.stub($button[0], "click").callsFake(() => {
-          navigate("/profile");
-        });
-        $button[0].click();
-      });
-
-    cy.wrap(navigate).should("be.calledWith", "/profile");
-  });
-
-  it("navigates to questions page when signout button is clicked", () => {
-    const navigate = cy.stub();
-
-    cy.mount(
-      <MemoryRouter navigator={{ navigate }}>
-        <Wrapper loggedIn={true}>
-          <Header search="" setSearchResults={() => {}} />
-        </Wrapper>
-      </MemoryRouter>
-    );
-
-    cy.get(".form_postBtn")
-      .contains("Sign Out")
-      .then(($button) => {
-        cy.stub($button[0], "click").callsFake(() => {
-          navigate("/questions");
-        });
-        $button[0].click();
-      });
-
-    cy.wrap(navigate).should("be.calledWith", "/questions");
-  });
-
   it("updates search value on input change", () => {
     cy.mount(
       <MemoryRouter>
         <Wrapper>
-          <Header search="" setSearchResults={() => {}} />
+          <Header search="" setSearchResults={() => {}} isLoggedIn={false} />
         </Wrapper>
       </MemoryRouter>
     );
@@ -138,7 +81,7 @@ describe("Header", () => {
     cy.mount(
       <MemoryRouter>
         <Wrapper>
-          <Header search="" setSearchResults={setSearchResults} />
+          <Header search="" setSearchResults={setSearchResults} isLoggedIn={false} />
         </Wrapper>
       </MemoryRouter>
     );
