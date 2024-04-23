@@ -13,4 +13,9 @@ module.exports = defineConfig({
       bundler: "webpack",
     },
   },
+
+  defaultCommandTimeout: 5000, 
+  requestTimeout: 10000,
+  pageLoadTimeout: 30000
 });
+
