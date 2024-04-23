@@ -25,10 +25,10 @@ The link to tests directs to the folder which has tests related to all the funct
 . . .
 
 ## Instructions to generate and view coverage report 
-`npm run test` in the server folder runs the jest tests and creates a coverage report in html. 
+`npm run test` in the server folder runs the jest tests and creates a coverage report in html.
 It can be accessed in server/coverage/index.html
 
 ## Instructions to run docker
-I already made the changes but make sure the mongo url is updated to mongodb://mongodb:27017/fake_so in init.js, destroy.js and config.js. To run the application on local the mongo url has to be updated to mongodb://localhost:27017/fake_so
+Make sure the mongo url is updated to mongodb://mongodb:27017/fake_so in init.js, destroy.js and config.js. To run the application on local the mongo url has to be updated to mongodb://localhost:27017/fake_so
 
 ## Extra Credit Section (if applicable)
